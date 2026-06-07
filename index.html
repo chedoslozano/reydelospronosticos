@@ -354,7 +354,7 @@ const PW_KEY   = 'mw26_auth';
 function checkPassword(){
   const val = document.getElementById('pw-input').value;
   if(val === PASSWORD){
-    localStorage.setItem(PW_KEY,'1');
+    sessionStorage.setItem(PW_KEY,'1');
     document.getElementById('password-screen').style.display='none';
     document.getElementById('main-app').style.display='block';
     initApp();
@@ -369,7 +369,7 @@ function checkPassword(){
 
 // Auto-login if already authenticated
 window.addEventListener('DOMContentLoaded',()=>{
-  if(localStorage.getItem(PW_KEY)==='1'){
+  if(sessionStorage.getItem(PW_KEY)==='1'){
     document.getElementById('password-screen').style.display='none';
     document.getElementById('main-app').style.display='block';
     initApp();
@@ -420,8 +420,8 @@ const GROUPS = {
 
 // ─── MATCHES ─────────────────────────────────────────────────────────────────
 const MATCHES = [
-  {id:1,tsdbId:'2391728',day:'Jue 11 jun',date:'2026-06-11',group:'A',time:'1:00 PM',home:'México',away:'Sudáfrica',pred:null,winPct:null,drawPct:null,lossPct:null,conf:null,players:[],keys:[],warns:[],tactic:''},
-  {id:2,tsdbId:'2461103',day:'Jue 11 jun',date:'2026-06-11',group:'A',time:'8:00 PM',home:'Corea del Sur',away:'Rep. Checa',pred:null,winPct:null,drawPct:null,lossPct:null,conf:null,players:[],keys:[],warns:[],tactic:''},
+  {id:1,tsdbId:'2391728',day:'Jue 11 jun',date:'2026-06-11',group:'A',time:'1:00 PM',home:'México',away:'Sudáfrica',pred:'2-0',winPct:72,drawPct:17,lossPct:11,conf:78,players:['Santiago Giménez','Raúl Jiménez','Luis Chávez','Edson Álvarez'],keys:['México invicto en 2026 (6V 2E)','Goleada 5-1 a Serbia en último amistoso','Sudáfrica sin victorias en 2026'],warns:['Edson Álvarez no al 100%','Luis Chávez con pocos minutos de regreso','Alexis Vega con molestias de rodilla'],tactic:'México propone bloque medio-alto con transiciones rápidas. Giménez y Jiménez como dupla de ataque. Sudáfrica en 4-2-3-1 buscando contragolpe, pero llega sin ritmo y sin victorias en 2026. El Azteca con 87,000 aficionados es el factor decisivo.'},
+  {id:2,tsdbId:'2461103',day:'Jue 11 jun',date:'2026-06-11',group:'A',time:'8:00 PM',home:'Corea del Sur',away:'Rep. Checa',pred:'1-1',winPct:44,drawPct:30,lossPct:26,conf:52,players:['Son Heung-min','Lee Kang-in','Patrik Schick','Tomáš Souček'],keys:['Corea clasificó invicta','Rep. Checa regresa al Mundial tras 20 años','Hložek regresó de lesión y anotó vs Kosovo'],warns:['Hwang In-beom con lesión de tobillo','Calor de Guadalajara perjudica a checos'],tactic:'Corea bloque colectivo con pressing intenso. Lee Kang-in como motor creativo. Rep. Checa con base de liga local pero Schick y Souček aportan nivel europeo. Partido equilibrado.'},
   {id:3,tsdbId:'2461104',day:'Vie 12 jun',date:'2026-06-12',group:'B',time:'1:00 PM',home:'Canadá',away:'Bosnia y Herz.',pred:null,winPct:null,drawPct:null,lossPct:null,conf:null,players:[],keys:[],warns:[],tactic:''},
   {id:4,tsdbId:'2391729',day:'Vie 12 jun',date:'2026-06-12',group:'D',time:'7:00 PM',home:'EUA',away:'Paraguay',pred:null,winPct:null,drawPct:null,lossPct:null,conf:null,players:[],keys:[],warns:[],tactic:''},
   {id:5,tsdbId:'2391732',day:'Sáb 13 jun',date:'2026-06-13',group:'B',time:'1:00 PM',home:'Qatar',away:'Suiza',pred:null,winPct:null,drawPct:null,lossPct:null,conf:null,players:[],keys:[],warns:[],tactic:''},

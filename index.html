@@ -136,6 +136,17 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 .toast.show{opacity:1}
 .loading-msg{text-align:center;padding:40px;color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:12px}
 .score-history-row{display:flex;align-items:center;gap:12px;padding:8px 12px;background:var(--card);border:1px solid var(--border);border-radius:6px;margin-bottom:6px}
+.reminder-banner{display:none;align-items:center;gap:14px;padding:14px 18px;border-radius:8px;margin-bottom:20px;border:1px solid;animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.reminder-banner.urgent{background:rgba(240,180,41,0.08);border-color:var(--gold-dim);color:var(--gold)}
+.reminder-banner.soon{background:rgba(59,130,246,0.08);border-color:var(--blue-dim);color:#93c5fd}
+.reminder-banner.playing{background:rgba(236,72,153,0.08);border-color:#9d174d;color:#f9a8d4}
+.reminder-icon{font-size:22px;flex-shrink:0}
+.reminder-body{flex:1}
+.reminder-title{font-weight:600;font-size:13px;margin-bottom:3px}
+.reminder-sub{font-size:12px;opacity:.8;line-height:1.5}
+.reminder-cta{font-size:11px;font-weight:500;padding:6px 14px;border-radius:4px;border:1px solid currentColor;background:none;color:inherit;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;white-space:nowrap;opacity:.9;transition:opacity .15s;text-decoration:none;display:inline-block}
+.reminder-cta:hover{opacity:1}
 @media(max-width:600px){
   .detail-grid{grid-template-columns:1fr}
   .match-conf{display:none}
@@ -170,6 +181,14 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
     <div class="sync-status" id="sync-status">
       <div class="sync-dot" id="sync-dot"></div>
       <span id="sync-text">Abre la app para sincronizar resultados automáticamente.</span>
+    </div>
+    <div id="reminder-banner" class="reminder-banner" style="display:none">
+      <div class="reminder-icon" id="reminder-icon">⚽</div>
+      <div class="reminder-body">
+        <div class="reminder-title" id="reminder-title"></div>
+        <div class="reminder-sub" id="reminder-sub"></div>
+      </div>
+      <a class="reminder-cta" href="https://claude.ai" target="_blank">Abrir Claude →</a>
     </div>
     <div class="filter-bar" id="filter-bar"></div>
     <div id="matches-container"></div>
@@ -407,6 +426,7 @@ async function syncResults(){
 
     updateHeader();
     renderMatches();
+    renderBanner();
     if(activeTab==='grupos') renderGroups();
 
   } catch(err){
@@ -609,11 +629,75 @@ function renderScore(){
   }).join('');
 }
 
+// ─── REMINDER BANNER ─────────────────────────────────────────────────────────
+const ANALYSIS_SESSIONS = [
+  { date:'2026-06-10', label:'Miércoles 10 jun', days:'11, 12 y 13 de junio', count:8 },
+  { date:'2026-06-15', label:'Domingo 15 jun',   days:'14, 15, 16 y 17 de junio', count:16 },
+  { date:'2026-06-19', label:'Jueves 19 jun',    days:'18, 19, 20 y 21 de junio', count:16 },
+  { date:'2026-06-23', label:'Lunes 23 jun',     days:'22 al 27 de junio', count:32 },
+];
+
+function renderBanner(){
+  const banner = document.getElementById('reminder-banner');
+  const icon   = document.getElementById('reminder-icon');
+  const title  = document.getElementById('reminder-title');
+  const sub    = document.getElementById('reminder-sub');
+
+  const now   = new Date();
+  const today = now.toISOString().slice(0,10);
+
+  // Check if there are live matches right now
+  if(state.live && Object.keys(state.live).length > 0){
+    banner.className = 'reminder-banner playing';
+    banner.style.display = 'flex';
+    icon.textContent  = '🔴';
+    title.textContent = '¡Hay partidos en vivo ahora mismo!';
+    sub.textContent   = 'Presiona "Sincronizar resultados" para ver los marcadores en tiempo real.';
+    return;
+  }
+
+  // Find next session
+  const next = ANALYSIS_SESSIONS.find(s => s.date >= today);
+  if(!next){ banner.style.display='none'; return; }
+
+  const sessionDate = new Date(next.date + 'T12:00:00');
+  const diffMs  = sessionDate - now;
+  const diffDays = Math.ceil(diffMs / (1000*60*60*24));
+
+  // Count how many upcoming matches still have no prediction
+  const pending = MATCHES.filter(m => !getMeta(m).pred && m.date > today).length;
+  if(pending === 0){ banner.style.display='none'; return; }
+
+  if(diffDays <= 0){
+    // Today is the day
+    banner.className = 'reminder-banner urgent';
+    banner.style.display = 'flex';
+    icon.textContent  = '⚡';
+    title.textContent = `¡Hoy es día de análisis! (${next.label})`;
+    sub.textContent   = `Entra a Claude para analizar los ${next.count} partidos del ${next.days} antes de que arranquen.`;
+  } else if(diffDays === 1){
+    banner.className = 'reminder-banner urgent';
+    banner.style.display = 'flex';
+    icon.textContent  = '⏰';
+    title.textContent = `Mañana toca analizar partidos (${next.label})`;
+    sub.textContent   = `Tienes ${pending} partidos sin pronóstico. Mañana analizamos los del ${next.days}.`;
+  } else if(diffDays <= 3){
+    banner.className = 'reminder-banner soon';
+    banner.style.display = 'flex';
+    icon.textContent  = '📅';
+    title.textContent = `Próximo análisis en ${diffDays} días (${next.label})`;
+    sub.textContent   = `${pending} partidos pendientes de pronóstico — los del ${next.days}.`;
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 loadState();
 renderFilters();
 renderMatches();
 updateHeader();
+renderBanner();
 // Auto-sync al cargar
 setTimeout(syncResults, 800);
 </script>

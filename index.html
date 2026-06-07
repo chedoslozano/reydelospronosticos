@@ -354,8 +354,7 @@ const PW_KEY   = 'mw26_auth';
 function checkPassword(){
   const val = document.getElementById('pw-input').value;
   if(val === PASSWORD){
-    sessionStorage.setItem(PW_KEY,'1');
-    document.getElementById('password-screen').style.display='none';
+        document.getElementById('password-screen').style.display='none';
     document.getElementById('main-app').style.display='block';
     initApp();
   } else {
@@ -369,7 +368,7 @@ function checkPassword(){
 
 // Auto-login if already authenticated
 window.addEventListener('DOMContentLoaded',()=>{
-  if(sessionStorage.getItem(PW_KEY)==='1'){
+  if(false){
     document.getElementById('password-screen').style.display='none';
     document.getElementById('main-app').style.display='block';
     initApp();

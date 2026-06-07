@@ -4,251 +4,268 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quiniela Mundial 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --pitch:#1a7a3a;--pitch-dark:#155f2d;--pitch-line:rgba(255,255,255,0.08);
-  --surface:#ffffff;--surface-alt:#f7f8fa;--surface-dark:#1c2333;
-  --border:#e4e7ed;--border-dark:#2e3a4e;
-  --gold:#f5a623;--gold-light:#fef3dc;--gold-dark:#c47d0e;
-  --blue:#1a56db;--blue-light:#ebf0ff;--blue-dark:#1139a0;
-  --green:#0e9f6e;--green-light:#e6f9f2;--green-dark:#057a55;
-  --red:#e02424;--red-light:#fde8e8;--red-dark:#9b1c1c;
-  --purple:#7e3af2;--purple-light:#edebff;
-  --text:#111827;--text-2:#374151;--text-3:#6b7280;--text-4:#9ca3af;
-  --radius:12px;--radius-sm:8px;--radius-xs:6px;
-  --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.05);
-  --shadow-md:0 4px 16px rgba(0,0,0,.10),0 1px 4px rgba(0,0,0,.06);
+  --grass:#1e6b32;--grass2:#196128;
+  --panel:rgba(12,18,28,0.88);--panel-light:rgba(20,30,46,0.82);--panel-border:rgba(255,255,255,0.12);
+  --gold:#f5a623;--gold2:#d4891c;--gold-glow:rgba(245,166,35,0.3);
+  --cyan:#00d4ff;--cyan2:#0099cc;--cyan-glow:rgba(0,212,255,0.25);
+  --green:#00e676;--green2:#00b85a;--green-glow:rgba(0,230,118,0.2);
+  --red:#ff3d3d;--red2:#cc2222;--red-glow:rgba(255,61,61,0.2);
+  --purple:#b388ff;--purple2:#7c4dff;
+  --text:#f0f4f8;--text2:#a8b8cc;--text3:#607080;
+  --radius:6px;--radius-lg:10px;
 }
 
-body{background:var(--surface-alt);color:var(--text);font-family:'Figtree',sans-serif;font-size:14px;min-height:100vh}
+/* PITCH */
+body{
+  min-height:100vh;
+  background-color:var(--grass);
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 52px,rgba(0,0,0,0.07) 52px,rgba(0,0,0,0.07) 104px),
+    repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(255,255,255,0.025) 80px,rgba(255,255,255,0.025) 81px);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:14px;
+  color:var(--text);
+  position:relative;
+}
 
-/* ── PASSWORD ── */
-#password-screen{position:fixed;inset:0;z-index:1000;background:linear-gradient(135deg,var(--pitch-dark) 0%,var(--pitch) 60%,#2d9e55 100%);display:flex;align-items:center;justify-content:center;padding:20px}
-.pw-wrap{background:rgba(255,255,255,.97);border-radius:20px;padding:40px 36px;width:100%;max-width:380px;text-align:center;box-shadow:0 24px 48px rgba(0,0,0,.25)}
-.pw-badge{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--pitch),var(--pitch-dark));display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:32px}
-.pw-title{font-size:22px;font-weight:800;color:var(--text);margin-bottom:4px}
-.pw-sub{font-size:13px;color:var(--text-3);margin-bottom:28px}
-.pw-field{width:100%;padding:13px 16px;border:2px solid var(--border);border-radius:var(--radius-sm);font-size:16px;font-family:'Figtree',sans-serif;outline:none;transition:border-color .2s;text-align:center;letter-spacing:3px;color:var(--text)}
-.pw-field:focus{border-color:var(--pitch)}
-.pw-btn{width:100%;margin-top:12px;padding:13px;font-family:'Figtree',sans-serif;font-size:15px;font-weight:700;background:linear-gradient(135deg,var(--pitch),var(--pitch-dark));border:none;border-radius:var(--radius-sm);color:#fff;cursor:pointer;transition:opacity .2s}
-.pw-btn:hover{opacity:.9}
-.pw-error{font-size:12px;color:var(--red);margin-top:10px;min-height:18px}
-.pw-hint{font-size:11px;color:var(--text-4);margin-top:16px}
+/* Pitch lines */
+body::before{content:'';position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:260px;height:260px;border-radius:50%;border:2px solid rgba(255,255,255,0.06);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:2px;height:2px;border-radius:50%;box-shadow:0 0 0 10px rgba(255,255,255,0.04);pointer-events:none;z-index:0}
 
-/* ── HEADER ── */
-#main-app{display:none}
-.app-header{background:linear-gradient(135deg,var(--surface-dark) 0%,#2e3a4e 100%);padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.2)}
-.header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:62px;gap:16px}
-.logo{display:flex;align-items:center;gap:10px}
-.logo-icon{font-size:24px}
-.logo-text{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:#fff;line-height:1}
-.logo-sub{font-size:10px;color:rgba(255,255,255,.45);letter-spacing:1.5px;text-transform:uppercase}
-.header-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.hdr-chip{font-size:12px;font-weight:600;padding:5px 12px;border-radius:999px;white-space:nowrap}
-.hdr-chip.gold{background:rgba(245,166,35,.15);color:var(--gold);border:1px solid rgba(245,166,35,.3)}
-.hdr-chip.blue{background:rgba(26,86,219,.15);color:#60a5fa;border:1px solid rgba(26,86,219,.3)}
-.sync-btn{font-size:12px;font-weight:600;padding:7px 14px;border-radius:var(--radius-xs);border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);cursor:pointer;transition:all .15s;white-space:nowrap;font-family:'Figtree',sans-serif}
-.sync-btn:hover{background:rgba(255,255,255,.15)}
-.sync-btn.syncing{color:var(--gold);border-color:rgba(245,166,35,.4)}
+/* PASSWORD */
+#password-screen{position:fixed;inset:0;z-index:1000;background:linear-gradient(160deg,rgba(10,20,15,0.97) 0%,rgba(15,35,22,0.96) 100%);display:flex;align-items:center;justify-content:center;padding:20px}
+.pw-wrap{width:100%;max-width:360px;text-align:center}
+.pw-crest{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--grass),#0a2e14);border:3px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:36px;box-shadow:0 0 30px rgba(0,230,118,0.2)}
+.pw-title{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:4px;color:var(--text);margin-bottom:3px}
+.pw-sub{font-size:12px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:32px}
+.pw-panel{background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--radius-lg);padding:28px 24px;backdrop-filter:blur(12px)}
+.pw-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;text-align:left}
+.pw-field{width:100%;padding:12px 16px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius);color:var(--text);font-family:'Bebas Neue',sans-serif;font-size:22px;text-align:center;letter-spacing:5px;outline:none;transition:border-color .2s}
+.pw-field:focus{border-color:var(--green2);box-shadow:0 0 0 2px var(--green-glow)}
+.pw-btn{width:100%;margin-top:12px;padding:12px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(135deg,var(--green2),#006e35);border:none;border-radius:var(--radius);color:#fff;cursor:pointer;transition:opacity .2s;box-shadow:0 4px 12px rgba(0,184,90,0.3)}
+.pw-btn:hover{opacity:.88}
+.pw-error{font-size:12px;color:var(--red);margin-top:10px;min-height:16px;text-align:center}
+.pw-hint{font-size:11px;color:var(--text3);margin-top:16px;letter-spacing:1px}
 
-/* ── NAV ── */
-.nav-tabs{background:var(--surface-dark);border-bottom:1px solid var(--border-dark);padding:0 24px}
+/* HEADER — FIFA scoreboard style */
+#main-app{display:none;position:relative;z-index:1}
+.app-header{background:var(--panel);border-bottom:2px solid var(--gold);backdrop-filter:blur(16px);padding:0 20px;position:sticky;top:0;z-index:100}
+.header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;height:56px;gap:12px}
+.logo-wrap{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.logo-ball{font-size:22px}
+.logo-text{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:var(--gold);text-shadow:0 0 12px var(--gold-glow)}
+.logo-divider{width:1px;height:24px;background:var(--panel-border);margin:0 4px}
+.logo-sub{font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase}
+.header-spacer{flex:1}
+.hdr-stat{display:flex;flex-direction:column;align-items:center;padding:0 14px;border-left:1px solid var(--panel-border)}
+.hdr-stat-val{font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1;color:var(--gold);text-shadow:0 0 8px var(--gold-glow)}
+.hdr-stat-lbl{font-size:9px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-top:1px}
+.hdr-stat.blue .hdr-stat-val{color:var(--cyan);text-shadow:0 0 8px var(--cyan-glow)}
+.sync-btn{font-size:11px;font-weight:600;padding:7px 14px;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.06);color:var(--text2);cursor:pointer;transition:all .15s;letter-spacing:1px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;white-space:nowrap;margin-left:8px}
+.sync-btn:hover{background:rgba(255,255,255,0.1);color:var(--text)}
+.sync-btn.syncing{color:var(--gold);border-color:rgba(245,166,35,0.3)}
+
+/* NAV — FIFA tab bar */
+.nav-tabs{background:rgba(8,14,22,0.75);border-bottom:1px solid var(--panel-border);backdrop-filter:blur(8px);padding:0 20px}
 .nav-inner{max-width:1100px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none}
 .nav-inner::-webkit-scrollbar{display:none}
-.nav-tab{font-size:13px;font-weight:600;padding:13px 18px;border:none;background:none;color:rgba(255,255,255,.45);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;letter-spacing:.3px;transition:all .15s;font-family:'Figtree',sans-serif}
-.nav-tab:hover{color:rgba(255,255,255,.75)}
-.nav-tab.active{color:#fff;border-bottom-color:var(--gold)}
+.nav-tab{font-size:12px;font-weight:700;padding:11px 18px;border:none;background:none;color:var(--text3);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;letter-spacing:2px;text-transform:uppercase;transition:all .15s;font-family:'Barlow Condensed',sans-serif}
+.nav-tab:hover{color:var(--text2)}
+.nav-tab.active{color:var(--gold);border-bottom-color:var(--gold);text-shadow:0 0 8px var(--gold-glow)}
 
-/* ── MAIN ── */
-.main{max-width:1100px;margin:0 auto;padding:20px 24px}
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:18px 20px}
 
-/* ── BANNER ── */
-.reminder-banner{display:none;align-items:center;gap:12px;padding:13px 16px;border-radius:var(--radius-sm);margin-bottom:16px;border:1px solid}
-.reminder-banner.urgent{background:#fffbeb;border-color:#fcd34d;color:#92400e}
-.reminder-banner.soon{background:#eff6ff;border-color:#bfdbfe;color:#1e40af}
-.reminder-banner.playing{background:#fdf2f8;border-color:#f0abfc;color:#701a75}
-.reminder-icon{font-size:20px;flex-shrink:0}
-.reminder-body{flex:1}
-.reminder-title{font-weight:700;font-size:13px;margin-bottom:2px}
-.reminder-sub{font-size:12px;opacity:.85;line-height:1.5}
-.reminder-cta{font-size:12px;font-weight:600;padding:6px 14px;border-radius:var(--radius-xs);border:1px solid currentColor;background:none;color:inherit;cursor:pointer;font-family:'Figtree',sans-serif;white-space:nowrap;text-decoration:none;display:inline-block}
-
-/* ── SYNC STATUS ── */
-.sync-status{font-size:12px;padding:9px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-3);margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.sync-dot{width:7px;height:7px;border-radius:50%;background:var(--text-4);flex-shrink:0}
-.sync-dot.ok{background:var(--green)}
+/* SYNC STATUS */
+.sync-status{font-size:11px;padding:8px 14px;background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--radius);color:var(--text3);margin-bottom:14px;display:flex;align-items:center;gap:8px;backdrop-filter:blur(8px);letter-spacing:.5px}
+.sync-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;background:var(--text3)}
+.sync-dot.ok{background:var(--green2);box-shadow:0 0 6px var(--green-glow)}
 .sync-dot.err{background:var(--red)}
 .sync-dot.loading{background:var(--gold);animation:blink 1s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
-/* ── FILTER ── */
-.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
-.filter-btn{font-size:12px;font-weight:500;padding:6px 13px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-3);cursor:pointer;transition:all .15s;white-space:nowrap;font-family:'Figtree',sans-serif}
-.filter-btn:hover{border-color:var(--text-3);color:var(--text-2)}
-.filter-btn.active{background:var(--pitch);color:#fff;border-color:var(--pitch);font-weight:600}
+/* BANNER */
+.reminder-banner{display:none;align-items:center;gap:12px;padding:11px 14px;border-radius:var(--radius);margin-bottom:14px;border:1px solid;backdrop-filter:blur(8px)}
+.reminder-banner.urgent{background:rgba(245,166,35,0.1);border-color:rgba(245,166,35,0.3);color:var(--gold)}
+.reminder-banner.soon{background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.2);color:var(--cyan)}
+.reminder-banner.playing{background:rgba(255,61,61,0.1);border-color:rgba(255,61,61,0.3);color:var(--red)}
+.reminder-icon{font-size:18px;flex-shrink:0}
+.reminder-body{flex:1}
+.reminder-title{font-weight:700;font-size:12px;margin-bottom:2px;letter-spacing:.5px;text-transform:uppercase}
+.reminder-sub{font-size:11px;opacity:.8;line-height:1.4}
+.reminder-cta{font-size:11px;font-weight:700;padding:5px 12px;border-radius:var(--radius);border:1px solid currentColor;background:none;color:inherit;cursor:pointer;font-family:'Barlow Condensed',sans-serif;white-space:nowrap;text-decoration:none;letter-spacing:1px;text-transform:uppercase}
 
-/* ── DAY SECTION ── */
-.day-section{margin-bottom:24px}
+/* FILTER */
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.filter-btn{font-size:11px;font-weight:600;padding:5px 12px;border-radius:var(--radius);border:1px solid var(--panel-border);background:var(--panel);color:var(--text3);cursor:pointer;transition:all .15s;letter-spacing:1px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;backdrop-filter:blur(6px)}
+.filter-btn:hover{color:var(--text2);border-color:rgba(255,255,255,0.2)}
+.filter-btn.active{background:rgba(245,166,35,0.15);color:var(--gold);border-color:rgba(245,166,35,0.4);text-shadow:0 0 6px var(--gold-glow)}
+
+/* DAY */
+.day-section{margin-bottom:22px}
 .day-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.day-pill{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1.5px;color:var(--pitch-dark);background:var(--green-light);border:1px solid rgba(14,159,110,.2);padding:3px 12px;border-radius:999px}
-.day-count{font-size:11px;color:var(--text-4);font-weight:500}
-.day-line{flex:1;height:1px;background:var(--border)}
+.day-label{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--gold);text-shadow:0 0 8px var(--gold-glow)}
+.day-count{font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase}
+.day-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(245,166,35,0.3),transparent)}
 
-/* ── MATCH CARD ── */
-.match-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;transition:box-shadow .15s,border-color .15s;box-shadow:var(--shadow)}
-.match-card:hover{box-shadow:var(--shadow-md);border-color:#d1d5db}
-.match-card.has-pred{border-left:4px solid var(--gold)}
-.match-card.correct-exact{border-left:4px solid var(--gold);background:linear-gradient(135deg,var(--gold-light),var(--surface))}
-.match-card.correct-result{border-left:4px solid var(--green)}
-.match-card.wrong{border-left:4px solid var(--red-light)}
-.match-card.live{border-left:4px solid var(--red);animation:pulse-live 2s infinite}
-@keyframes pulse-live{0%,100%{box-shadow:var(--shadow)}50%{box-shadow:0 0 0 3px rgba(224,36,36,.1),var(--shadow)}}
+/* MATCH CARD — FIFA panel */
+.match-card{background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--radius-lg);margin-bottom:8px;overflow:hidden;backdrop-filter:blur(12px);transition:border-color .15s,box-shadow .15s;position:relative}
+.match-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent);pointer-events:none}
+.match-card:hover{border-color:rgba(255,255,255,0.2);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+.match-card.has-pred{border-left:3px solid var(--gold)}
+.match-card.correct-exact{border-left:3px solid var(--gold);box-shadow:0 0 16px var(--gold-glow)}
+.match-card.correct-result{border-left:3px solid var(--green2)}
+.match-card.wrong{border-left:3px solid rgba(255,61,61,0.4)}
+.match-card.live{border-left:3px solid var(--red);animation:pulse-live 2s infinite}
+@keyframes pulse-live{0%,100%{box-shadow:0 4px 16px rgba(0,0,0,.3)}50%{box-shadow:0 4px 20px rgba(255,61,61,0.2)}}
 
-/* ── MATCH TOP ── */
-.match-top{padding:14px 16px}
+/* MATCH TOP */
+.match-top{padding:13px 16px}
 .match-meta{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.group-badge{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text-3);background:var(--surface-alt);border:1px solid var(--border);padding:2px 8px;border-radius:999px}
-.match-time-label{font-size:11px;color:var(--text-4);margin-left:auto}
-.live-pill{font-size:10px;font-weight:700;background:var(--red);color:#fff;padding:2px 8px;border-radius:999px;letter-spacing:.5px;animation:blink 1s infinite}
+.group-badge{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);background:rgba(0,0,0,0.4);border:1px solid var(--panel-border);padding:2px 8px;border-radius:3px}
+.match-time-label{font-size:10px;color:var(--text3);margin-left:auto;letter-spacing:.5px}
+.live-pill{font-size:9px;font-weight:700;background:var(--red);color:#fff;padding:2px 8px;border-radius:3px;letter-spacing:1px;text-transform:uppercase;animation:blink 1s infinite;margin-left:auto}
 
-/* ── TEAMS ROW ── */
-.teams-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.team-name{font-size:15px;font-weight:700;color:var(--text);flex:1}
+/* TEAMS */
+.teams-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.team-name{font-size:16px;font-weight:700;color:var(--text);flex:1;letter-spacing:.5px}
 .team-name.away{text-align:right}
-.score-center{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:64px}
-.score-vs{font-size:11px;color:var(--text-4);font-weight:500}
-.real-score-badge{font-size:11px;font-weight:600;color:var(--text-3);background:var(--surface-alt);border:1px solid var(--border);padding:2px 8px;border-radius:6px}
-.live-score-badge{font-size:11px;font-weight:700;color:var(--red);background:var(--red-light);border:1px solid rgba(224,36,36,.2);padding:2px 8px;border-radius:6px}
-.pts-earned{font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px}
-.pts-earned.p5{background:var(--gold-light);color:var(--gold-dark)}
-.pts-earned.p3{background:var(--green-light);color:var(--green-dark)}
-.pts-earned.p0{background:var(--red-light);color:var(--red-dark)}
+.score-center{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:60px}
+.score-vs{font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase}
+.real-score-badge{font-size:12px;font-weight:700;color:var(--text2);background:rgba(0,0,0,0.4);border:1px solid var(--panel-border);padding:3px 10px;border-radius:4px;letter-spacing:1px}
+.live-score-badge{font-size:12px;font-weight:700;color:var(--red);background:rgba(255,61,61,0.1);border:1px solid rgba(255,61,61,0.3);padding:3px 10px;border-radius:4px}
+.pts-earned{font-size:9px;font-weight:700;padding:2px 8px;border-radius:3px;letter-spacing:.5px;text-transform:uppercase}
+.pts-earned.p5{background:rgba(245,166,35,0.15);color:var(--gold);border:1px solid rgba(245,166,35,0.3)}
+.pts-earned.p3{background:rgba(0,184,90,0.12);color:var(--green2);border:1px solid rgba(0,184,90,0.25)}
+.pts-earned.p0{background:rgba(255,61,61,0.1);color:var(--red);border:1px solid rgba(255,61,61,0.2)}
 
-/* ── TWO COLUMN PREDICTIONS ── */
-.pred-columns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0}
-.pred-col{border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden}
-.pred-col-header{padding:7px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--border)}
-.pred-col-header.mine{background:linear-gradient(135deg,#f0f9ff,#e0f2fe)}
-.pred-col-header.stats{background:linear-gradient(135deg,#f5f3ff,#ede9fe)}
-.pred-col-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px}
-.pred-col-title.mine{color:var(--blue-dark)}
+/* TWO COLUMNS */
+.pred-columns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pred-col{border:1px solid var(--panel-border);border-radius:var(--radius);overflow:hidden;background:rgba(0,0,0,0.25)}
+.pred-col-header{padding:7px 11px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--panel-border)}
+.pred-col-header.mine{background:rgba(0,212,255,0.06);border-bottom-color:rgba(0,212,255,0.15)}
+.pred-col-header.stats{background:rgba(179,136,255,0.06);border-bottom-color:rgba(179,136,255,0.15)}
+.pred-col-icon{font-size:12px}
+.pred-col-title{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.pred-col-title.mine{color:var(--cyan)}
 .pred-col-title.stats{color:var(--purple)}
-.pred-col-icon{font-size:13px}
-.pred-col-body{padding:10px 12px}
+.pred-col-body{padding:10px 11px}
 
 /* MY PREDICTION */
-.my-pred-score{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--blue);letter-spacing:2px;line-height:1;margin-bottom:4px}
-.my-pred-score.pending{font-family:'Figtree',sans-serif;font-size:12px;color:var(--text-4);letter-spacing:0}
-.conf-row{display:flex;align-items:center;gap:6px;margin-top:4px}
-.conf-label{font-size:10px;color:var(--text-4);white-space:nowrap}
-.conf-track{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.my-pred-score{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--cyan);letter-spacing:3px;line-height:1;margin-bottom:4px;text-shadow:0 0 10px var(--cyan-glow)}
+.my-pred-score.pending{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--text3);letter-spacing:1px;text-shadow:none;text-transform:uppercase}
+.win-probs{display:flex;gap:3px;margin-top:6px}
+.prob-seg{flex:1;text-align:center;padding:3px 2px;border-radius:3px;font-size:9px;font-weight:700;letter-spacing:.5px}
+.prob-seg.w{background:rgba(0,184,90,0.15);color:var(--green2);border:1px solid rgba(0,184,90,0.2)}
+.prob-seg.d{background:rgba(255,255,255,0.05);color:var(--text3);border:1px solid var(--panel-border)}
+.prob-seg.l{background:rgba(255,61,61,0.1);color:var(--red);border:1px solid rgba(255,61,61,0.15)}
+.conf-row{display:flex;align-items:center;gap:6px;margin-top:5px}
+.conf-label{font-size:9px;color:var(--text3);letter-spacing:.5px;text-transform:uppercase;white-space:nowrap}
+.conf-track{flex:1;height:3px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
 .conf-fill{height:100%;border-radius:2px}
-.conf-fill.high{background:var(--green)}
+.conf-fill.high{background:var(--green2);box-shadow:0 0 4px var(--green-glow)}
 .conf-fill.med{background:var(--gold)}
 .conf-fill.low{background:var(--red)}
-.conf-pct{font-size:10px;font-weight:600;color:var(--text-3);width:28px;text-align:right}
-.win-probs{display:flex;gap:3px;margin-top:6px}
-.prob-seg{flex:1;text-align:center;padding:3px 2px;border-radius:4px;font-size:9px;font-weight:600}
-.prob-seg.w{background:var(--green-light);color:var(--green-dark)}
-.prob-seg.d{background:#f3f4f6;color:var(--text-3)}
-.prob-seg.l{background:var(--red-light);color:var(--red-dark)}
+.conf-pct{font-size:9px;font-weight:700;color:var(--text2);width:24px;text-align:right}
 
 /* STATS PREDICTION */
-.stat-rec-score{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--purple);letter-spacing:2px;line-height:1;margin-bottom:4px}
-.stat-options{display:flex;flex-direction:column;gap:3px;margin-top:6px}
-.stat-option{display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:5px;cursor:pointer;transition:background .15s}
-.stat-option:hover{background:var(--surface-alt)}
-.stat-option.best{background:var(--purple-light)}
-.stat-option-score{font-size:12px;font-weight:700;color:var(--text);min-width:30px;font-family:'Bebas Neue',sans-serif;letter-spacing:1px}
-.stat-option-bar-wrap{flex:1}
-.stat-option-bar{height:3px;border-radius:2px;background:var(--purple);opacity:.6}
-.stat-option-prob{font-size:10px;color:var(--text-4);min-width:28px;text-align:right}
-.stat-option-pts{font-size:10px;font-weight:600;color:var(--purple);min-width:36px;text-align:right}
-.stat-xg{display:flex;align-items:center;gap:4px;margin-top:6px}
-.xg-label{font-size:9px;color:var(--text-4);text-transform:uppercase;letter-spacing:.5px}
-.xg-val{font-size:10px;font-weight:600;color:var(--text-2)}
-.xg-bar-wrap{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden;display:flex}
-.xg-home{height:100%;background:var(--blue)}
+.stat-rec-score{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--purple);letter-spacing:3px;line-height:1;margin-bottom:4px}
+.stat-xg-row{display:flex;align-items:center;gap:5px;margin-top:5px}
+.xg-tag{font-size:9px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;flex-shrink:0}
+.xg-num{font-size:10px;font-weight:700;color:var(--text2);flex-shrink:0}
+.xg-bar-wrap{flex:1;height:3px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;display:flex}
+.xg-home{height:100%;background:var(--cyan)}
 .xg-away{height:100%;background:var(--red)}
+.stat-options{display:flex;flex-direction:column;gap:2px;margin-top:6px}
+.stat-opt{display:flex;align-items:center;gap:5px;padding:4px 6px;border-radius:3px;border:1px solid transparent}
+.stat-opt.best{background:rgba(179,136,255,0.08);border-color:rgba(179,136,255,0.2)}
+.stat-opt-score{font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--text);letter-spacing:1px;min-width:28px}
+.stat-opt-bar-wrap{flex:1;height:2px;background:rgba(255,255,255,0.07);border-radius:1px;overflow:hidden}
+.stat-opt-bar{height:100%;background:var(--purple);opacity:.7}
+.stat-opt-prob{font-size:9px;color:var(--text3);min-width:26px;text-align:right}
+.stat-opt-pts{font-size:9px;font-weight:700;color:var(--purple);min-width:32px;text-align:right}
 
 /* RESULT INPUT */
-.result-input-row{display:flex;align-items:center;gap:8px;padding:10px 16px;border-top:1px solid var(--border);background:var(--surface-alt);flex-wrap:wrap}
-.result-label{font-size:11px;font-weight:600;color:var(--text-3);white-space:nowrap;text-transform:uppercase;letter-spacing:.5px}
-.score-input{width:40px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-xs);color:var(--text);font-family:'Bebas Neue',sans-serif;font-size:20px;text-align:center;padding:5px 0;outline:none;transition:border-color .2s}
-.score-input:focus{border-color:var(--pitch)}
-.score-sep{font-size:16px;font-weight:700;color:var(--text-3)}
-.save-btn{font-size:12px;font-weight:600;padding:7px 16px;border-radius:var(--radius-xs);border:none;background:var(--pitch);color:#fff;cursor:pointer;transition:opacity .15s;font-family:'Figtree',sans-serif}
+.result-input-row{display:flex;align-items:center;gap:8px;padding:9px 16px;border-top:1px solid var(--panel-border);background:rgba(0,0,0,0.2);flex-wrap:wrap}
+.result-label{font-size:10px;font-weight:700;color:var(--text3);white-space:nowrap;letter-spacing:1px;text-transform:uppercase}
+.score-input{width:38px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius);color:var(--text);font-family:'Bebas Neue',sans-serif;font-size:20px;text-align:center;padding:5px 0;outline:none;transition:border-color .2s}
+.score-input:focus{border-color:var(--green2);box-shadow:0 0 0 2px var(--green-glow)}
+.score-sep{font-size:16px;font-weight:700;color:var(--text3)}
+.save-btn{font-size:11px;font-weight:700;padding:6px 14px;border-radius:var(--radius);border:none;background:linear-gradient(135deg,var(--green2),#006e35);color:#fff;cursor:pointer;transition:opacity .15s;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;text-transform:uppercase}
 .save-btn:hover{opacity:.85}
-.clear-btn{font-size:12px;font-weight:500;padding:7px 10px;border-radius:var(--radius-xs);border:1px solid var(--border);background:none;color:var(--text-3);cursor:pointer;font-family:'Figtree',sans-serif}
+.clear-btn{font-size:11px;padding:6px 10px;border-radius:var(--radius);border:1px solid var(--panel-border);background:none;color:var(--text3);cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px}
 .clear-btn:hover{border-color:var(--red);color:var(--red)}
-.auto-badge{font-size:10px;font-weight:600;padding:3px 8px;border-radius:999px;background:var(--green-light);color:var(--green-dark);border:1px solid rgba(14,159,110,.2)}
+.auto-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;background:rgba(0,184,90,0.12);color:var(--green2);border:1px solid rgba(0,184,90,0.2);letter-spacing:.5px;text-transform:uppercase}
 
-/* PRED PENDING */
-.pred-pending-row{display:flex;align-items:center;gap:8px;padding:10px 16px;border-top:1px solid var(--border);background:var(--gold-light)}
-.pred-pending-label{font-size:12px;color:var(--gold-dark);font-weight:500;flex:1}
-.set-pred-btn{font-size:12px;font-weight:600;padding:7px 14px;border-radius:var(--radius-xs);border:1px solid var(--gold);background:var(--gold-light);color:var(--gold-dark);cursor:pointer;font-family:'Figtree',sans-serif}
-.set-pred-btn:hover{background:var(--gold);color:#fff}
+/* PENDING */
+.pred-pending-row{display:flex;align-items:center;gap:8px;padding:9px 16px;border-top:1px solid var(--panel-border);background:rgba(245,166,35,0.04);flex-wrap:wrap}
+.pred-pending-label{font-size:11px;color:rgba(245,166,35,0.5);flex:1;letter-spacing:.5px}
+.set-pred-btn{font-size:11px;font-weight:700;padding:6px 14px;border-radius:var(--radius);border:1px solid rgba(245,166,35,0.3);background:rgba(245,166,35,0.08);color:var(--gold);cursor:pointer;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;text-transform:uppercase}
+.set-pred-btn:hover{background:rgba(245,166,35,0.15)}
 
-/* EXPAND DETAIL */
-.detail-toggle{display:flex;align-items:center;gap:4px;padding:7px 16px;border-top:1px solid var(--border);cursor:pointer;font-size:11px;font-weight:600;color:var(--text-3);background:none;border:none;width:100%;text-align:left;border-top:1px solid var(--border);font-family:'Figtree',sans-serif;transition:color .15s}
-.detail-toggle:hover{color:var(--pitch)}
-.detail-toggle-icon{transition:transform .2s;font-size:10px}
-.detail-toggle-icon.open{transform:rotate(180deg)}
-.match-detail{display:none;padding:14px 16px;border-top:1px solid var(--border);background:var(--surface-alt)}
+/* DETAIL */
+.detail-toggle{display:flex;align-items:center;gap:4px;padding:7px 16px;border-top:1px solid var(--panel-border);cursor:pointer;font-size:10px;font-weight:700;color:var(--text3);background:none;border:none;width:100%;text-align:left;border-top:1px solid var(--panel-border);font-family:'Barlow Condensed',sans-serif;transition:color .15s;letter-spacing:1px;text-transform:uppercase}
+.detail-toggle:hover{color:var(--text2)}
+.dtgl-icon{transition:transform .2s;font-size:10px}
+.dtgl-icon.open{transform:rotate(180deg)}
+.match-detail{display:none;padding:13px 16px;border-top:1px solid var(--panel-border);background:rgba(0,0,0,0.2)}
 .match-detail.open{display:block}
-.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px}
-.detail-block{}
-.detail-subtitle{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text-3);margin-bottom:6px}
-.tactic-text{font-size:12px;color:var(--text-2);line-height:1.7}
-.tag-list{display:flex;flex-wrap:wrap;gap:5px}
-.tag{font-size:11px;padding:3px 9px;border-radius:999px;border:1px solid var(--border);color:var(--text-3);font-weight:500}
-.tag.key{border-color:#bfdbfe;color:var(--blue-dark);background:var(--blue-light)}
-.tag.warn{border-color:#fed7aa;color:#92400e;background:#fffbeb}
-.tag.player{border-color:var(--border);color:var(--text-2);background:var(--surface)}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:10px}
+.detail-subtitle{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px}
+.tactic-text{font-size:12px;color:var(--text2);line-height:1.65}
+.tag-list{display:flex;flex-wrap:wrap;gap:4px}
+.tag{font-size:10px;padding:2px 8px;border-radius:3px;font-weight:500;letter-spacing:.3px}
+.tag.key{background:rgba(0,212,255,0.08);color:var(--cyan2);border:1px solid rgba(0,212,255,0.15)}
+.tag.warn{background:rgba(245,166,35,0.08);color:var(--gold2);border:1px solid rgba(245,166,35,0.2)}
+.tag.player{background:rgba(255,255,255,0.05);color:var(--text2);border:1px solid var(--panel-border)}
 .detail-full{grid-column:1/-1}
 
-/* ── GROUPS TAB ── */
-.groups-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-.group-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
-.group-card-header{background:linear-gradient(135deg,var(--pitch-dark),var(--pitch));padding:10px 14px;display:flex;justify-content:space-between;align-items:center}
-.group-name{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1.5px;color:#fff}
+/* GROUPS */
+.groups-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:10px}
+.group-card{background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--radius-lg);overflow:hidden;backdrop-filter:blur(10px)}
+.group-card-header{background:linear-gradient(135deg,rgba(245,166,35,0.15),rgba(245,166,35,0.05));padding:9px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(245,166,35,0.15)}
+.group-name{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--gold);text-shadow:0 0 8px var(--gold-glow)}
 .group-table{width:100%;border-collapse:collapse;font-size:12px}
-.group-table th{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--text-4);padding:6px 12px;text-align:center;border-bottom:1px solid var(--border);font-weight:700;background:var(--surface-alt)}
+.group-table th{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);padding:5px 12px;text-align:center;border-bottom:1px solid var(--panel-border);font-weight:700;background:rgba(0,0,0,0.2)}
 .group-table th:first-child,.group-table th:nth-child(2){text-align:left}
-.group-table td{padding:8px 12px;text-align:center;color:var(--text-3);border-bottom:1px solid var(--border)}
-.group-table td:first-child{font-size:11px;width:28px}
-.group-table td.team-col{text-align:left;color:var(--text);font-weight:600}
+.group-table td{padding:7px 12px;text-align:center;color:var(--text3);border-bottom:1px solid rgba(255,255,255,0.04)}
+.group-table td:first-child{font-size:10px;width:26px}
+.group-table td.team-col{text-align:left;color:var(--text);font-weight:600;letter-spacing:.3px}
 .group-table tr:last-child td{border-bottom:none}
-.qualify-row td{background:rgba(14,159,110,.04)}
-.qualify-dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-right:5px}
+.qualify-row td{background:rgba(0,184,90,0.05)}
+.qualify-dot{width:6px;height:6px;border-radius:50%;background:var(--green2);display:inline-block;margin-right:5px;box-shadow:0 0 4px var(--green-glow)}
 
-/* ── SCORE TAB ── */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:20px}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;text-align:center;box-shadow:var(--shadow)}
-.stat-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text-3);margin-bottom:6px}
+/* SCORE TAB */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:8px;margin-bottom:18px}
+.stat-card{background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--radius-lg);padding:14px;text-align:center;backdrop-filter:blur(8px)}
+.stat-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px}
 .stat-value{font-family:'Bebas Neue',sans-serif;font-size:36px;line-height:1;color:var(--text)}
-.stat-value.gold{color:var(--gold)}
-.stat-sub{font-size:11px;color:var(--text-4);margin-top:3px}
-.history-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:7px;box-shadow:var(--shadow)}
-.history-ico{font-size:16px;width:22px;text-align:center;flex-shrink:0}
-.history-match{flex:1;font-size:13px;font-weight:600;color:var(--text)}
-.history-pred{font-size:11px;color:var(--text-3);font-family:monospace}
-.history-real{font-size:11px;font-weight:600;color:var(--text);font-family:monospace;margin:0 4px}
-.history-pts{font-family:'Bebas Neue',sans-serif;font-size:20px;min-width:40px;text-align:right}
+.stat-value.gold{color:var(--gold);text-shadow:0 0 12px var(--gold-glow)}
+.stat-sub{font-size:10px;color:var(--text3);margin-top:3px;letter-spacing:.5px}
+.history-row{display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--radius);margin-bottom:6px;backdrop-filter:blur(8px)}
+.history-ico{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.history-match{flex:1;font-size:13px;font-weight:600;color:var(--text);letter-spacing:.3px}
+.history-pred{font-size:11px;color:var(--text3);font-family:monospace}
+.history-real{font-size:11px;font-weight:700;color:var(--text);font-family:monospace;margin:0 6px}
+.history-pts{font-family:'Bebas Neue',sans-serif;font-size:20px;min-width:36px;text-align:right}
 
-/* ── TOAST ── */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:#fff;padding:10px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;z-index:999;opacity:0;transition:opacity .2s;pointer-events:none;box-shadow:var(--shadow-md)}
+.loading-msg{text-align:center;padding:40px;color:var(--text3);font-size:12px;letter-spacing:1px;text-transform:uppercase}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--panel);border:1px solid var(--panel-border);color:var(--text);padding:9px 16px;border-radius:var(--radius);font-size:12px;font-weight:600;z-index:999;opacity:0;transition:opacity .2s;pointer-events:none;backdrop-filter:blur(12px);letter-spacing:.5px}
 .toast.show{opacity:1}
-
-.loading-msg{text-align:center;padding:40px;color:var(--text-3);font-size:13px}
 
 @media(max-width:640px){
   .pred-columns{grid-template-columns:1fr}
   .detail-grid{grid-template-columns:1fr}
-  .main{padding:16px}
-  .match-top{padding:12px}
+  .main{padding:14px}
+  .match-top{padding:11px}
+  .header-inner{height:50px}
+  .logo-text{font-size:17px}
 }
 </style>
 </head>
@@ -257,13 +274,16 @@ body{background:var(--surface-alt);color:var(--text);font-family:'Figtree',sans-
 <!-- PASSWORD -->
 <div id="password-screen">
   <div class="pw-wrap">
-    <div class="pw-badge">⚽</div>
+    <div class="pw-crest">⚽</div>
     <div class="pw-title">Mundial 2026</div>
-    <div class="pw-sub">Quiniela privada · Solo invitados</div>
-    <input class="pw-field" id="pw-input" type="password" placeholder="••••••" autocomplete="off" onkeydown="if(event.key==='Enter')checkPassword()">
-    <button class="pw-btn" onclick="checkPassword()">Entrar →</button>
-    <div class="pw-error" id="pw-error"></div>
-    <div class="pw-hint">🏆 EasyFútbol · Fase de grupos</div>
+    <div class="pw-sub">Quiniela Privada</div>
+    <div class="pw-panel">
+      <div class="pw-label">Contraseña</div>
+      <input class="pw-field" id="pw-input" type="password" placeholder="••••••" autocomplete="off" onkeydown="if(event.key==='Enter')checkPassword()">
+      <button class="pw-btn" onclick="checkPassword()">▶ Entrar</button>
+      <div class="pw-error" id="pw-error"></div>
+    </div>
+    <div class="pw-hint">⚽ EasyFútbol · Solo invitados</div>
   </div>
 </div>
 
@@ -271,49 +291,45 @@ body{background:var(--surface-alt);color:var(--text);font-family:'Figtree',sans-
 <div id="main-app">
   <div class="app-header">
     <div class="header-inner">
-      <div class="logo">
-        <div class="logo-icon">⚽</div>
-        <div>
-          <div class="logo-text">Mundial 2026</div>
-          <div class="logo-sub">Quiniela · Fase de grupos</div>
-        </div>
+      <div class="logo-wrap">
+        <div class="logo-ball">⚽</div>
+        <div class="logo-text">Mundial 2026</div>
+        <div class="logo-divider"></div>
+        <div class="logo-sub">Quiniela</div>
       </div>
-      <div class="header-right">
-        <button class="sync-btn" id="sync-btn" onclick="syncResults()">⟳ Sincronizar</button>
-        <div class="hdr-chip gold" id="hdr-pts">0 pts</div>
-        <div class="hdr-chip blue" id="hdr-analyzed">0/72</div>
+      <div class="header-spacer"></div>
+      <button class="sync-btn" id="sync-btn" onclick="syncResults()">⟳ Sincronizar</button>
+      <div class="hdr-stat">
+        <div class="hdr-stat-val" id="hdr-pts">0</div>
+        <div class="hdr-stat-lbl">Puntos</div>
+      </div>
+      <div class="hdr-stat blue">
+        <div class="hdr-stat-val" id="hdr-analyzed">0/72</div>
+        <div class="hdr-stat-lbl">Analizados</div>
       </div>
     </div>
   </div>
 
   <div class="nav-tabs">
     <div class="nav-inner">
-      <button class="nav-tab active" onclick="showTab('partidos')">Partidos</button>
-      <button class="nav-tab" onclick="showTab('grupos')">Grupos</button>
-      <button class="nav-tab" onclick="showTab('marcador')">Marcador</button>
+      <button class="nav-tab active" onclick="showTab('partidos')">⚽ Partidos</button>
+      <button class="nav-tab" onclick="showTab('grupos')">🏟 Grupos</button>
+      <button class="nav-tab" onclick="showTab('marcador')">🏆 Marcador</button>
     </div>
   </div>
 
   <div class="main">
     <div id="tab-partidos">
-      <div class="sync-status" id="sync-status">
-        <div class="sync-dot" id="sync-dot"></div>
-        <span id="sync-text">Conectando con TheSportsDB...</span>
-      </div>
+      <div class="sync-status" id="sync-status"><div class="sync-dot" id="sync-dot"></div><span id="sync-text">Conectando con TheSportsDB...</span></div>
       <div id="reminder-banner" class="reminder-banner" style="display:none">
-        <div class="reminder-icon" id="reminder-icon">⚽</div>
-        <div class="reminder-body">
-          <div class="reminder-title" id="reminder-title"></div>
-          <div class="reminder-sub" id="reminder-sub"></div>
-        </div>
+        <div class="reminder-icon" id="reminder-icon"></div>
+        <div class="reminder-body"><div class="reminder-title" id="reminder-title"></div><div class="reminder-sub" id="reminder-sub"></div></div>
         <a class="reminder-cta" href="https://claude.ai" target="_blank">Abrir Claude →</a>
       </div>
       <div class="filter-bar" id="filter-bar"></div>
       <div id="matches-container"></div>
     </div>
-    <div id="tab-grupos" style="display:none">
-      <div class="groups-grid" id="groups-container"></div>
-    </div>
+    <div id="tab-grupos" style="display:none"><div class="groups-grid" id="groups-container"></div></div>
     <div id="tab-marcador" style="display:none">
       <div class="stats-grid" id="stats-grid"></div>
       <div id="score-detail"></div>
@@ -325,7 +341,7 @@ body{background:var(--surface-alt);color:var(--text);font-family:'Figtree',sans-
 
 <script>
 // ─── PASSWORD ─────────────────────────────────────────────────────────────────
-const PASSWORD = 'mundial2026';
+const PASSWORD='mundial2026';
 function checkPassword(){
   if(document.getElementById('pw-input').value===PASSWORD){
     document.getElementById('password-screen').style.display='none';
@@ -333,97 +349,95 @@ function checkPassword(){
     initApp();
   } else {
     const e=document.getElementById('pw-error');
-    e.textContent='Contraseña incorrecta, intenta de nuevo.';
+    e.textContent='Contraseña incorrecta.';
     document.getElementById('pw-input').value='';
     document.getElementById('pw-input').focus();
     setTimeout(()=>e.textContent='',3000);
   }
 }
-window.addEventListener('DOMContentLoaded',()=>{ setTimeout(()=>document.getElementById('pw-input').focus(),200); });
+window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>document.getElementById('pw-input').focus(),200));
 
 // ─── API ─────────────────────────────────────────────────────────────────────
-const API_BASE='https://www.thesportsdb.com/api/v1/json/3';
-const LEAGUE_ID='4429', SEASON='2026';
+const API_BASE='https://www.thesportsdb.com/api/v1/json/3',LEAGUE_ID='4429',SEASON='2026';
 const TEAM_MAP={'Mexico':'México','South Africa':'Sudáfrica','South Korea':'Corea del Sur','Czech Republic':'Rep. Checa','Czechia':'Rep. Checa','Canada':'Canadá','Bosnia-Herzegovina':'Bosnia y Herz.','USA':'EUA','United States':'EUA','Switzerland':'Suiza','Brazil':'Brasil','Morocco':'Marruecos','Haiti':'Haití','Scotland':'Escocia','Australia':'Australia','Turkey':'Turquía','Türkiye':'Turquía','Germany':'Alemania','Curaçao':'Curazao','Netherlands':'Países Bajos','Japan':'Japón','Sweden':'Suecia','Tunisia':'Túnez','Ivory Coast':'Costa de Marfil','Ecuador':'Ecuador','Spain':'España','Cape Verde':'Cabo Verde','Saudi Arabia':'Arabia Saudita','Uruguay':'Uruguay','Belgium':'Bélgica','Egypt':'Egipto','Iran':'Irán','New Zealand':'Nueva Zelanda','France':'Francia','Senegal':'Senegal','Iraq':'Irak','Norway':'Noruega','Argentina':'Argentina','Algeria':'Argelia','Austria':'Austria','Jordan':'Jordania','Portugal':'Portugal','DR Congo':'Congo DR','Uzbekistan':'Uzbekistán','Colombia':'Colombia','England':'Inglaterra','Croatia':'Croacia','Ghana':'Ghana','Panama':'Panamá','Qatar':'Qatar','Paraguay':'Paraguay'};
 function norm(n){return TEAM_MAP[n]||n;}
 
-// ─── STATS DATA (from friend's model) ────────────────────────────────────────
+// ─── STATS DATA ───────────────────────────────────────────────────────────────
 const STATS_DATA=[
-{"group":"A","home":"México","away":"Sudáfrica","xg_h":1.25,"xg_a":0.58,"p_win":52.5,"p_draw":30.5,"p_loss":17.0,"recommend":"1-0","top_scores":[{"score":"1-0","prob":19.8,"e_pts":2.57},{"score":"0-0","prob":16.3,"e_pts":1.73},{"score":"2-0","prob":12.5,"e_pts":2.2}]},
-{"group":"A","home":"Corea del Sur","away":"Rep. Checa","xg_h":1.16,"xg_a":1.22,"p_win":34.4,"p_draw":28.4,"p_loss":37.3,"recommend":"1-1","top_scores":[{"score":"1-1","prob":13.4,"e_pts":1.52},{"score":"0-1","prob":11.0,"e_pts":1.67},{"score":"1-0","prob":10.4,"e_pts":1.55}]},
-{"group":"B","home":"Canadá","away":"Bosnia y Herz.","xg_h":1.69,"xg_a":0.35,"p_win":70.8,"p_draw":22.3,"p_loss":7.0,"recommend":"1-0","top_scores":[{"score":"1-0","prob":21.8,"e_pts":3.21},{"score":"2-0","prob":18.6,"e_pts":3.05},{"score":"0-0","prob":13.2,"e_pts":1.33}]},
-{"group":"D","home":"EUA","away":"Paraguay","xg_h":1.11,"xg_a":0.87,"p_win":40.6,"p_draw":31.3,"p_loss":28.0,"recommend":"1-0","top_scores":[{"score":"1-0","prob":15.0,"e_pts":1.97},{"score":"0-0","prob":14.1,"e_pts":1.65},{"score":"1-1","prob":13.6,"e_pts":1.62}]},
-{"group":"B","home":"Qatar","away":"Suiza","xg_h":1.04,"xg_a":2.24,"p_win":16.2,"p_draw":19.6,"p_loss":64.2,"recommend":"1-2","top_scores":[{"score":"1-2","prob":9.8,"e_pts":2.42},{"score":"0-2","prob":9.5,"e_pts":2.4},{"score":"1-1","prob":9.0,"e_pts":1.04}]},
-{"group":"C","home":"Brasil","away":"Marruecos","xg_h":1.35,"xg_a":0.5,"p_win":57.8,"p_draw":28.8,"p_loss":13.5,"recommend":"1-0","top_scores":[{"score":"1-0","prob":21.0,"e_pts":2.78},{"score":"0-0","prob":16.0,"e_pts":1.66},{"score":"2-0","prob":14.3,"e_pts":2.45}]},
-{"group":"C","home":"Haití","away":"Escocia","xg_h":0.87,"xg_a":1.73,"p_win":18.4,"p_draw":24.1,"p_loss":57.5,"recommend":"0-1","top_scores":[{"score":"0-1","prob":12.6,"e_pts":2.35},{"score":"1-1","prob":11.4,"e_pts":1.3},{"score":"0-2","prob":11.1,"e_pts":2.28}]},
-{"group":"D","home":"Australia","away":"Turquía","xg_h":1.85,"xg_a":1.21,"p_win":52.1,"p_draw":23.2,"p_loss":24.7,"recommend":"1-1","top_scores":[{"score":"1-1","prob":10.7,"e_pts":1.23},{"score":"2-1","prob":9.7,"e_pts":2.05},{"score":"1-0","prob":8.4,"e_pts":1.98}]},
-{"group":"E","home":"Alemania","away":"Curazao","xg_h":2.92,"xg_a":0.56,"p_win":84.6,"p_draw":10.9,"p_loss":4.5,"recommend":"2-0","top_scores":[{"score":"2-0","prob":13.3,"e_pts":3.2},{"score":"3-0","prob":12.9,"e_pts":3.18},{"score":"4-0","prob":9.4,"e_pts":3.01}]},
-{"group":"F","home":"Países Bajos","away":"Japón","xg_h":1.82,"xg_a":0.92,"p_win":58.3,"p_draw":23.2,"p_loss":18.5,"recommend":"1-0","top_scores":[{"score":"1-0","prob":11.5,"e_pts":2.32},{"score":"1-1","prob":11.1,"e_pts":1.25},{"score":"2-0","prob":10.7,"e_pts":2.28}]},
-{"group":"E","home":"Costa de Marfil","away":"Ecuador","xg_h":1.46,"xg_a":0.81,"p_win":52.2,"p_draw":27.2,"p_loss":20.5,"recommend":"1-0","top_scores":[{"score":"1-0","prob":14.8,"e_pts":2.31},{"score":"1-1","prob":12.5,"e_pts":1.44},{"score":"2-0","prob":11.0,"e_pts":2.12}]},
-{"group":"F","home":"Suecia","away":"Túnez","xg_h":0.99,"xg_a":0.97,"p_win":34.6,"p_draw":31.9,"p_loss":33.6,"recommend":"0-0","top_scores":[{"score":"0-0","prob":14.4,"e_pts":1.68},{"score":"1-1","prob":13.8,"e_pts":1.65},{"score":"1-0","prob":13.6,"e_pts":1.72}]},
-{"group":"H","home":"España","away":"Cabo Verde","xg_h":2.31,"xg_a":0.48,"p_win":78.6,"p_draw":15.4,"p_loss":5.9,"recommend":"2-0","top_scores":[{"score":"2-0","prob":16.4,"e_pts":3.18},{"score":"1-0","prob":14.1,"e_pts":3.06},{"score":"3-0","prob":12.7,"e_pts":2.99}]},
-{"group":"G","home":"Bélgica","away":"Egipto","xg_h":2.03,"xg_a":0.67,"p_win":69.1,"p_draw":19.9,"p_loss":11.0,"recommend":"2-0","top_scores":[{"score":"2-0","prob":13.9,"e_pts":2.77},{"score":"1-0","prob":13.5,"e_pts":2.74},{"score":"3-0","prob":9.4,"e_pts":2.54}]},
-{"group":"H","home":"Arabia Saudita","away":"Uruguay","xg_h":0.79,"xg_a":1.6,"p_win":18.1,"p_draw":25.5,"p_loss":56.4,"recommend":"0-1","top_scores":[{"score":"0-1","prob":14.4,"e_pts":2.41},{"score":"1-1","prob":11.8,"e_pts":1.36},{"score":"0-2","prob":11.7,"e_pts":2.28}]},
-{"group":"G","home":"Irán","away":"Nueva Zelanda","xg_h":1.58,"xg_a":0.34,"p_win":68.6,"p_draw":24.0,"p_loss":7.4,"recommend":"1-0","top_scores":[{"score":"1-0","prob":23.0,"e_pts":3.21},{"score":"2-0","prob":18.3,"e_pts":2.97},{"score":"0-0","prob":14.8,"e_pts":1.46}]},
-{"group":"I","home":"Francia","away":"Senegal","xg_h":1.59,"xg_a":0.77,"p_win":56.6,"p_draw":25.6,"p_loss":17.8,"recommend":"1-0","top_scores":[{"score":"1-0","prob":14.8,"e_pts":2.44},{"score":"2-0","prob":11.9,"e_pts":2.3},{"score":"1-1","prob":11.8,"e_pts":1.36}]},
-{"group":"I","home":"Irak","away":"Noruega","xg_h":0.68,"xg_a":0.98,"p_win":24.3,"p_draw":34.5,"p_loss":41.1,"recommend":"0-0","top_scores":[{"score":"0-0","prob":19.3,"e_pts":2.0},{"score":"0-1","prob":18.3,"e_pts":2.15},{"score":"1-1","prob":13.0,"e_pts":1.68}]},
-{"group":"J","home":"Argentina","away":"Argelia","xg_h":1.67,"xg_a":0.92,"p_win":54.8,"p_draw":24.8,"p_loss":20.4,"recommend":"1-0","top_scores":[{"score":"1-0","prob":12.3,"e_pts":2.26},{"score":"1-1","prob":11.8,"e_pts":1.33},{"score":"2-0","prob":10.5,"e_pts":2.17}]},
-{"group":"J","home":"Austria","away":"Jordania","xg_h":1.54,"xg_a":0.76,"p_win":55.6,"p_draw":26.2,"p_loss":18.2,"recommend":"1-0","top_scores":[{"score":"1-0","prob":15.2,"e_pts":2.43},{"score":"1-1","prob":12.0,"e_pts":1.39},{"score":"2-0","prob":11.9,"e_pts":2.26}]},
-{"group":"K","home":"Portugal","away":"Congo DR","xg_h":2.99,"xg_a":0.73,"p_win":82.1,"p_draw":11.8,"p_loss":6.1,"recommend":"2-0","top_scores":[{"score":"2-0","prob":11.0,"e_pts":3.01},{"score":"3-0","prob":10.9,"e_pts":3.01},{"score":"4-0","prob":8.2,"e_pts":2.87}]},
-{"group":"L","home":"Inglaterra","away":"Croacia","xg_h":1.61,"xg_a":0.96,"p_win":52.3,"p_draw":25.5,"p_loss":22.2,"recommend":"1-1","top_scores":[{"score":"1-1","prob":12.1,"e_pts":1.37},{"score":"1-0","prob":12.1,"e_pts":2.17},{"score":"2-0","prob":9.9,"e_pts":2.06}]},
-{"group":"L","home":"Ghana","away":"Panamá","xg_h":0.78,"xg_a":1.77,"p_win":15.9,"p_draw":23.4,"p_loss":60.7,"recommend":"0-1","top_scores":[{"score":"0-1","prob":13.6,"e_pts":2.5},{"score":"0-2","prob":12.2,"e_pts":2.43},{"score":"1-1","prob":11.0,"e_pts":1.25}]},
-{"group":"K","home":"Uzbekistán","away":"Colombia","xg_h":0.95,"xg_a":1.63,"p_win":21.7,"p_draw":25.3,"p_loss":53.0,"recommend":"0-1","top_scores":[{"score":"0-1","prob":12.1,"e_pts":2.2},{"score":"1-1","prob":12.0,"e_pts":1.36},{"score":"0-2","prob":10.1,"e_pts":2.09}]},
-{"group":"A","home":"Rep. Checa","away":"Sudáfrica","xg_h":1.15,"xg_a":0.75,"p_win":44.9,"p_draw":31.5,"p_loss":23.6,"recommend":"1-0","top_scores":[{"score":"1-0","prob":16.9,"e_pts":2.19},{"score":"0-0","prob":15.3,"e_pts":1.71},{"score":"1-1","prob":13.2,"e_pts":1.61}]},
-{"group":"B","home":"Suiza","away":"Bosnia y Herz.","xg_h":1.86,"xg_a":0.48,"p_win":70.7,"p_draw":20.8,"p_loss":8.6,"recommend":"1-0","top_scores":[{"score":"1-0","prob":17.7,"e_pts":3.01},{"score":"2-0","prob":16.7,"e_pts":2.95},{"score":"3-0","prob":10.3,"e_pts":2.64}]},
-{"group":"B","home":"Canadá","away":"Qatar","xg_h":1.55,"xg_a":1.13,"p_win":46.7,"p_draw":25.8,"p_loss":27.5,"recommend":"1-1","top_scores":[{"score":"1-1","prob":12.3,"e_pts":1.39},{"score":"1-0","prob":10.4,"e_pts":1.92},{"score":"2-1","prob":9.3,"e_pts":1.87}]},
-{"group":"A","home":"México","away":"Corea del Sur","xg_h":1.22,"xg_a":1.05,"p_win":39.7,"p_draw":29.1,"p_loss":31.2,"recommend":"1-1","top_scores":[{"score":"1-1","prob":13.5,"e_pts":1.55},{"score":"1-0","prob":12.3,"e_pts":1.81},{"score":"0-0","prob":10.6,"e_pts":1.4}]},
-{"group":"D","home":"EUA","away":"Australia","xg_h":1.22,"xg_a":1.07,"p_win":39.2,"p_draw":28.9,"p_loss":31.8,"recommend":"1-1","top_scores":[{"score":"1-1","prob":13.5,"e_pts":1.54},{"score":"1-0","prob":12.1,"e_pts":1.78},{"score":"0-1","prob":10.5,"e_pts":1.48}]},
-{"group":"C","home":"Escocia","away":"Marruecos","xg_h":0.62,"xg_a":1.26,"p_win":18.0,"p_draw":30.3,"p_loss":51.7,"recommend":"0-1","top_scores":[{"score":"0-1","prob":19.0,"e_pts":2.5},{"score":"0-0","prob":15.5,"e_pts":1.68},{"score":"1-1","prob":12.2,"e_pts":1.52}]},
-{"group":"C","home":"Brasil","away":"Haití","xg_h":4.12,"xg_a":0.28,"p_win":96.0,"p_draw":3.4,"p_loss":0.7,"recommend":"4-0","top_scores":[{"score":"4-0","prob":15.7,"e_pts":3.66},{"score":"3-0","prob":15.2,"e_pts":3.64},{"score":"5-0","prob":12.9,"e_pts":3.52}]},
-{"group":"D","home":"Turquía","away":"Paraguay","xg_h":1.7,"xg_a":0.94,"p_win":55.0,"p_draw":24.5,"p_loss":20.5,"recommend":"1-0","top_scores":[{"score":"1-0","prob":11.9,"e_pts":2.24},{"score":"1-1","prob":11.7,"e_pts":1.32},{"score":"2-0","prob":10.3,"e_pts":2.17}]},
-{"group":"F","home":"Países Bajos","away":"Suecia","xg_h":1.72,"xg_a":0.92,"p_win":56.0,"p_draw":24.3,"p_loss":19.7,"recommend":"1-0","top_scores":[{"score":"1-0","prob":12.0,"e_pts":2.28},{"score":"1-1","prob":11.6,"e_pts":1.31},{"score":"2-0","prob":10.6,"e_pts":2.21}]},
-{"group":"E","home":"Alemania","away":"Costa de Marfil","xg_h":1.96,"xg_a":1.06,"p_win":58.0,"p_draw":22.2,"p_loss":19.8,"recommend":"1-1","top_scores":[{"score":"1-1","prob":10.4,"e_pts":1.18},{"score":"2-1","prob":9.9,"e_pts":2.24},{"score":"2-0","prob":9.4,"e_pts":2.21}]},
-{"group":"E","home":"Ecuador","away":"Curazao","xg_h":2.03,"xg_a":0.4,"p_win":76.1,"p_draw":17.9,"p_loss":6.0,"recommend":"2-0","top_scores":[{"score":"2-0","prob":18.2,"e_pts":3.19},{"score":"1-0","prob":17.7,"e_pts":3.17},{"score":"3-0","prob":12.3,"e_pts":2.9}]},
-{"group":"F","home":"Túnez","away":"Japón","xg_h":1.0,"xg_a":1.02,"p_win":33.8,"p_draw":31.3,"p_loss":34.9,"recommend":"1-1","top_scores":[{"score":"1-1","prob":13.8,"e_pts":1.63},{"score":"0-0","prob":13.6,"e_pts":1.62},{"score":"0-1","prob":13.2,"e_pts":1.71}]},
-{"group":"H","home":"España","away":"Arabia Saudita","xg_h":2.53,"xg_a":0.54,"p_win":80.4,"p_draw":13.9,"p_loss":5.8,"recommend":"2-0","top_scores":[{"score":"2-0","prob":14.9,"e_pts":3.16},{"score":"3-0","prob":12.6,"e_pts":3.04},{"score":"1-0","prob":11.7,"e_pts":2.99}]},
-{"group":"G","home":"Bélgica","away":"Irán","xg_h":1.83,"xg_a":0.85,"p_win":60.3,"p_draw":23.0,"p_loss":16.8,"recommend":"1-0","top_scores":[{"score":"1-0","prob":12.3,"e_pts":2.42},{"score":"2-0","prob":11.5,"e_pts":2.38},{"score":"1-1","prob":10.9,"e_pts":1.23}]},
-{"group":"H","home":"Uruguay","away":"Cabo Verde","xg_h":1.55,"xg_a":0.62,"p_win":59.7,"p_draw":25.8,"p_loss":14.5,"recommend":"1-0","top_scores":[{"score":"1-0","prob":17.5,"e_pts":2.66},{"score":"2-0","prob":13.7,"e_pts":2.48},{"score":"0-0","prob":11.7,"e_pts":1.36}]},
-{"group":"G","home":"Nueva Zelanda","away":"Egipto","xg_h":0.37,"xg_a":1.24,"p_win":10.8,"p_draw":30.7,"p_loss":58.5,"recommend":"0-1","top_scores":[{"score":"0-1","prob":24.6,"e_pts":2.98},{"score":"0-0","prob":20.2,"e_pts":1.93},{"score":"0-2","prob":15.4,"e_pts":2.52}]},
-{"group":"J","home":"Argentina","away":"Austria","xg_h":2.04,"xg_a":0.6,"p_win":71.0,"p_draw":19.4,"p_loss":9.6,"recommend":"2-0","top_scores":[{"score":"2-0","prob":14.9,"e_pts":2.87},{"score":"1-0","prob":14.4,"e_pts":2.85},{"score":"3-0","prob":10.1,"e_pts":2.64}]},
-{"group":"I","home":"Francia","away":"Irak","xg_h":2.73,"xg_a":0.38,"p_win":86.1,"p_draw":10.7,"p_loss":3.2,"recommend":"2-0","top_scores":[{"score":"2-0","prob":16.7,"e_pts":3.42},{"score":"3-0","prob":15.2,"e_pts":3.35},{"score":"1-0","prob":12.2,"e_pts":3.19}]},
-{"group":"I","home":"Noruega","away":"Senegal","xg_h":0.65,"xg_a":1.11,"p_win":21.1,"p_draw":32.6,"p_loss":46.2,"recommend":"0-1","top_scores":[{"score":"0-1","prob":18.8,"e_pts":2.33},{"score":"0-0","prob":17.5,"e_pts":1.85},{"score":"1-1","prob":12.7,"e_pts":1.61}]},
-{"group":"J","home":"Jordania","away":"Argelia","xg_h":0.63,"xg_a":2.35,"p_win":8.0,"p_draw":16.3,"p_loss":75.7,"recommend":"0-2","top_scores":[{"score":"0-2","prob":14.1,"e_pts":2.97},{"score":"0-1","prob":11.8,"e_pts":2.86},{"score":"0-3","prob":11.0,"e_pts":2.82}]},
-{"group":"K","home":"Portugal","away":"Uzbekistán","xg_h":2.57,"xg_a":0.66,"p_win":78.3,"p_draw":14.5,"p_loss":7.2,"recommend":"2-0","top_scores":[{"score":"2-0","prob":13.1,"e_pts":3.0},{"score":"3-0","prob":11.2,"e_pts":2.91},{"score":"1-0","prob":10.1,"e_pts":2.85}]},
-{"group":"L","home":"Inglaterra","away":"Ghana","xg_h":2.05,"xg_a":0.67,"p_win":69.5,"p_draw":19.7,"p_loss":10.9,"recommend":"2-0","top_scores":[{"score":"2-0","prob":13.9,"e_pts":2.78},{"score":"1-0","prob":13.3,"e_pts":2.75},{"score":"3-0","prob":9.5,"e_pts":2.56}]},
-{"group":"L","home":"Panamá","away":"Croacia","xg_h":0.65,"xg_a":2.47,"p_win":7.6,"p_draw":15.3,"p_loss":77.1,"recommend":"0-2","top_scores":[{"score":"0-2","prob":13.5,"e_pts":2.99},{"score":"0-3","prob":11.1,"e_pts":2.87},{"score":"0-1","prob":10.8,"e_pts":2.85}]},
-{"group":"K","home":"Colombia","away":"Congo DR","xg_h":2.0,"xg_a":0.97,"p_win":61.0,"p_draw":21.6,"p_loss":17.4,"recommend":"2-0","top_scores":[{"score":"2-0","prob":10.3,"e_pts":2.34},{"score":"1-1","prob":10.2,"e_pts":1.16},{"score":"1-0","prob":10.0,"e_pts":2.33}]},
-{"group":"B","home":"Suiza","away":"Canadá","xg_h":1.03,"xg_a":1.73,"p_win":22.2,"p_draw":24.3,"p_loss":53.5,"recommend":"1-1","top_scores":[{"score":"1-1","prob":11.5,"e_pts":1.31},{"score":"1-0","prob":10.7,"e_pts":2.14},{"score":"2-1","prob":9.8,"e_pts":2.09}]},
-{"group":"B","home":"Bosnia y Herz.","away":"Qatar","xg_h":1.84,"xg_a":0.47,"p_win":70.5,"p_draw":21.0,"p_loss":8.5,"recommend":"1-0","top_scores":[{"score":"1-0","prob":18.1,"e_pts":3.02},{"score":"2-0","prob":16.8,"e_pts":2.96},{"score":"3-0","prob":10.3,"e_pts":2.63}]},
-{"group":"C","home":"Marruecos","away":"Haití","xg_h":2.34,"xg_a":0.43,"p_win":80.2,"p_draw":14.7,"p_loss":5.1,"recommend":"2-0","top_scores":[{"score":"2-0","prob":17.2,"e_pts":3.27},{"score":"1-0","prob":14.6,"e_pts":3.14},{"score":"3-0","prob":13.4,"e_pts":3.08}]},
-{"group":"C","home":"Escocia","away":"Brasil","xg_h":0.4,"xg_a":2.22,"p_win":5.2,"p_draw":15.7,"p_loss":79.2,"recommend":"0-2","top_scores":[{"score":"0-2","prob":18.0,"e_pts":3.27},{"score":"0-1","prob":16.0,"e_pts":3.18},{"score":"0-3","prob":13.3,"e_pts":3.04}]},
-{"group":"A","home":"Rep. Checa","away":"México","xg_h":1.03,"xg_a":1.14,"p_win":32.2,"p_draw":29.9,"p_loss":37.8,"recommend":"1-1","top_scores":[{"score":"1-1","prob":13.7,"e_pts":1.58},{"score":"0-1","prob":12.7,"e_pts":1.77},{"score":"0-0","prob":11.7,"e_pts":1.48}]},
-{"group":"A","home":"Sudáfrica","away":"Corea del Sur","xg_h":0.69,"xg_a":1.28,"p_win":19.8,"p_draw":29.8,"p_loss":50.4,"recommend":"0-1","top_scores":[{"score":"0-1","prob":17.6,"e_pts":2.39},{"score":"0-0","prob":14.2,"e_pts":1.61},{"score":"1-1","prob":12.6,"e_pts":1.52}]},
-{"group":"E","home":"Ecuador","away":"Alemania","xg_h":1.29,"xg_a":1.95,"p_win":25.0,"p_draw":22.5,"p_loss":52.5,"recommend":"1-1","top_scores":[{"score":"1-1","prob":10.1,"e_pts":1.18},{"score":"1-2","prob":9.6,"e_pts":2.06},{"score":"0-2","prob":7.5,"e_pts":1.95}]},
-{"group":"E","home":"Curazao","away":"Costa de Marfil","xg_h":0.54,"xg_a":1.46,"p_win":12.2,"p_draw":25.1,"p_loss":62.7,"recommend":"0-1","top_scores":[{"score":"0-1","prob":18.7,"e_pts":2.82},{"score":"0-2","prob":15.0,"e_pts":2.63},{"score":"0-0","prob":12.2,"e_pts":1.37}]},
-{"group":"F","home":"Japón","away":"Suecia","xg_h":1.08,"xg_a":1.14,"p_win":33.7,"p_draw":29.6,"p_loss":36.7,"recommend":"1-1","top_scores":[{"score":"1-1","prob":13.7,"e_pts":1.57},{"score":"0-1","prob":12.1,"e_pts":1.71},{"score":"1-0","prob":11.4,"e_pts":1.58}]},
-{"group":"F","home":"Túnez","away":"Países Bajos","xg_h":0.83,"xg_a":1.59,"p_win":19.3,"p_draw":25.7,"p_loss":55.1,"recommend":"0-1","top_scores":[{"score":"0-1","prob":13.9,"e_pts":2.35},{"score":"1-1","prob":12.0,"e_pts":1.37},{"score":"0-2","prob":11.2,"e_pts":2.21}]},
-{"group":"D","home":"Turquía","away":"EUA","xg_h":0.51,"xg_a":2.39,"p_win":6.0,"p_draw":14.9,"p_loss":79.1,"recommend":"0-2","top_scores":[{"score":"0-2","prob":15.8,"e_pts":3.16},{"score":"0-1","prob":13.0,"e_pts":3.02},{"score":"0-3","prob":12.6,"e_pts":3.0}]},
-{"group":"D","home":"Paraguay","away":"Australia","xg_h":1.68,"xg_a":0.38,"p_win":69.7,"p_draw":22.7,"p_loss":7.7,"recommend":"1-0","top_scores":[{"score":"1-0","prob":21.2,"e_pts":3.15},{"score":"2-0","prob":18.0,"e_pts":2.99},{"score":"0-0","prob":12.9,"e_pts":1.33}]},
-{"group":"I","home":"Senegal","away":"Irak","xg_h":1.54,"xg_a":0.43,"p_win":64.9,"p_draw":25.2,"p_loss":9.8,"recommend":"1-0","top_scores":[{"score":"1-0","prob":21.3,"e_pts":3.01},{"score":"2-0","prob":16.5,"e_pts":2.77},{"score":"0-0","prob":14.2,"e_pts":1.47}]},
-{"group":"I","home":"Noruega","away":"Francia","xg_h":0.56,"xg_a":1.98,"p_win":9.3,"p_draw":19.8,"p_loss":70.9,"recommend":"0-2","top_scores":[{"score":"0-2","prob":15.5,"e_pts":2.9},{"score":"0-1","prob":15.4,"e_pts":2.9},{"score":"0-3","prob":10.2,"e_pts":2.64}]},
-{"group":"H","home":"Uruguay","away":"España","xg_h":0.91,"xg_a":1.5,"p_win":22.6,"p_draw":26.7,"p_loss":50.7,"recommend":"0-1","top_scores":[{"score":"0-1","prob":13.2,"e_pts":2.18},{"score":"1-1","prob":12.5,"e_pts":1.43},{"score":"0-2","prob":10.1,"e_pts":2.03}]},
-{"group":"H","home":"Cabo Verde","away":"Arabia Saudita","xg_h":1.46,"xg_a":0.43,"p_win":62.9,"p_draw":26.6,"p_loss":10.5,"recommend":"1-0","top_scores":[{"score":"1-0","prob":21.8,"e_pts":2.98},{"score":"2-0","prob":16.1,"e_pts":2.69},{"score":"0-0","prob":15.3,"e_pts":1.56}]},
-{"group":"G","home":"Egipto","away":"Irán","xg_h":1.31,"xg_a":0.61,"p_win":53.4,"p_draw":29.5,"p_loss":17.1,"recommend":"1-0","top_scores":[{"score":"1-0","prob":18.9,"e_pts":2.55},{"score":"0-0","prob":14.9,"e_pts":1.63},{"score":"2-0","prob":12.6,"e_pts":2.23}]},
-{"group":"G","home":"Nueva Zelanda","away":"Bélgica","xg_h":0.28,"xg_a":2.86,"p_win":1.9,"p_draw":8.8,"p_loss":89.3,"recommend":"0-2","top_scores":[{"score":"0-2","prob":17.9,"e_pts":3.57},{"score":"0-3","prob":17.0,"e_pts":3.53},{"score":"0-1","prob":12.4,"e_pts":3.3}]},
-{"group":"L","home":"Croacia","away":"Ghana","xg_h":1.7,"xg_a":0.93,"p_win":55.2,"p_draw":24.5,"p_loss":20.2,"recommend":"1-0","top_scores":[{"score":"1-0","prob":12.0,"e_pts":2.26},{"score":"1-1","prob":11.7,"e_pts":1.32},{"score":"2-0","prob":10.4,"e_pts":2.18}]},
-{"group":"L","home":"Panamá","away":"Inglaterra","xg_h":0.46,"xg_a":2.97,"p_win":3.3,"p_draw":9.7,"p_loss":87.0,"recommend":"0-2","top_scores":[{"score":"0-2","prob":14.4,"e_pts":3.33},{"score":"0-3","prob":14.3,"e_pts":3.32},{"score":"0-4","prob":10.6,"e_pts":3.14}]},
-{"group":"K","home":"Colombia","away":"Portugal","xg_h":1.02,"xg_a":1.23,"p_win":30.2,"p_draw":29.1,"p_loss":40.6,"recommend":"1-1","top_scores":[{"score":"1-1","prob":13.5,"e_pts":1.55},{"score":"0-1","prob":12.7,"e_pts":1.85},{"score":"0-0","prob":10.8,"e_pts":1.42}]},
-{"group":"K","home":"Congo DR","away":"Uzbekistán","xg_h":1.99,"xg_a":0.9,"p_win":62.5,"p_draw":21.4,"p_loss":16.1,"recommend":"2-0","top_scores":[{"score":"2-0","prob":11.0,"e_pts":2.43},{"score":"1-0","prob":10.8,"e_pts":2.42},{"score":"1-1","prob":10.2,"e_pts":1.15}]},
-{"group":"J","home":"Argelia","away":"Austria","xg_h":2.01,"xg_a":0.4,"p_win":75.7,"p_draw":18.1,"p_loss":6.2,"recommend":"2-0","top_scores":[{"score":"2-0","prob":18.2,"e_pts":3.18},{"score":"1-0","prob":17.9,"e_pts":3.17},{"score":"3-0","prob":12.2,"e_pts":2.88}]},
-{"group":"J","home":"Jordania","away":"Argentina","xg_h":0.45,"xg_a":3.07,"p_win":3.0,"p_draw":9.0,"p_loss":88.0,"recommend":"0-3","top_scores":[{"score":"0-3","prob":14.5,"e_pts":3.36},{"score":"0-2","prob":14.1,"e_pts":3.35},{"score":"0-4","prob":11.1,"e_pts":3.2}]}
+{"home":"México","away":"Sudáfrica","xg_h":1.25,"xg_a":0.58,"p_win":52.5,"p_draw":30.5,"p_loss":17.0,"recommend":"1-0","top_scores":[{"score":"1-0","prob":19.8,"e_pts":2.57},{"score":"0-0","prob":16.3,"e_pts":1.73},{"score":"2-0","prob":12.5,"e_pts":2.2}]},
+{"home":"Corea del Sur","away":"Rep. Checa","xg_h":1.16,"xg_a":1.22,"p_win":34.4,"p_draw":28.4,"p_loss":37.3,"recommend":"1-1","top_scores":[{"score":"1-1","prob":13.4,"e_pts":1.52},{"score":"0-1","prob":11.0,"e_pts":1.67},{"score":"1-0","prob":10.4,"e_pts":1.55}]},
+{"home":"Canadá","away":"Bosnia y Herz.","xg_h":1.69,"xg_a":0.35,"p_win":70.8,"p_draw":22.3,"p_loss":7.0,"recommend":"1-0","top_scores":[{"score":"1-0","prob":21.8,"e_pts":3.21},{"score":"2-0","prob":18.6,"e_pts":3.05},{"score":"0-0","prob":13.2,"e_pts":1.33}]},
+{"home":"EUA","away":"Paraguay","xg_h":1.11,"xg_a":0.87,"p_win":40.6,"p_draw":31.3,"p_loss":28.0,"recommend":"1-0","top_scores":[{"score":"1-0","prob":15.0,"e_pts":1.97},{"score":"0-0","prob":14.1,"e_pts":1.65},{"score":"1-1","prob":13.6,"e_pts":1.62}]},
+{"home":"Qatar","away":"Suiza","xg_h":1.04,"xg_a":2.24,"p_win":16.2,"p_draw":19.6,"p_loss":64.2,"recommend":"1-2","top_scores":[{"score":"1-2","prob":9.8,"e_pts":2.42},{"score":"0-2","prob":9.5,"e_pts":2.4},{"score":"1-1","prob":9.0,"e_pts":1.04}]},
+{"home":"Brasil","away":"Marruecos","xg_h":1.35,"xg_a":0.5,"p_win":57.8,"p_draw":28.8,"p_loss":13.5,"recommend":"1-0","top_scores":[{"score":"1-0","prob":21.0,"e_pts":2.78},{"score":"0-0","prob":16.0,"e_pts":1.66},{"score":"2-0","prob":14.3,"e_pts":2.45}]},
+{"home":"Haití","away":"Escocia","xg_h":0.87,"xg_a":1.73,"p_win":18.4,"p_draw":24.1,"p_loss":57.5,"recommend":"0-1","top_scores":[{"score":"0-1","prob":12.6,"e_pts":2.35},{"score":"1-1","prob":11.4,"e_pts":1.3},{"score":"0-2","prob":11.1,"e_pts":2.28}]},
+{"home":"Australia","away":"Turquía","xg_h":1.85,"xg_a":1.21,"p_win":52.1,"p_draw":23.2,"p_loss":24.7,"recommend":"1-1","top_scores":[{"score":"1-1","prob":10.7,"e_pts":1.23},{"score":"2-1","prob":9.7,"e_pts":2.05},{"score":"1-0","prob":8.4,"e_pts":1.98}]},
+{"home":"Alemania","away":"Curazao","xg_h":2.92,"xg_a":0.56,"p_win":84.6,"p_draw":10.9,"p_loss":4.5,"recommend":"2-0","top_scores":[{"score":"2-0","prob":13.3,"e_pts":3.2},{"score":"3-0","prob":12.9,"e_pts":3.18},{"score":"4-0","prob":9.4,"e_pts":3.01}]},
+{"home":"Países Bajos","away":"Japón","xg_h":1.82,"xg_a":0.92,"p_win":58.3,"p_draw":23.2,"p_loss":18.5,"recommend":"1-0","top_scores":[{"score":"1-0","prob":11.5,"e_pts":2.32},{"score":"1-1","prob":11.1,"e_pts":1.25},{"score":"2-0","prob":10.7,"e_pts":2.28}]},
+{"home":"Costa de Marfil","away":"Ecuador","xg_h":1.46,"xg_a":0.81,"p_win":52.2,"p_draw":27.2,"p_loss":20.5,"recommend":"1-0","top_scores":[{"score":"1-0","prob":14.8,"e_pts":2.31},{"score":"1-1","prob":12.5,"e_pts":1.44},{"score":"2-0","prob":11.0,"e_pts":2.12}]},
+{"home":"Suecia","away":"Túnez","xg_h":0.99,"xg_a":0.97,"p_win":34.6,"p_draw":31.9,"p_loss":33.6,"recommend":"0-0","top_scores":[{"score":"0-0","prob":14.4,"e_pts":1.68},{"score":"1-1","prob":13.8,"e_pts":1.65},{"score":"1-0","prob":13.6,"e_pts":1.72}]},
+{"home":"España","away":"Cabo Verde","xg_h":2.31,"xg_a":0.48,"p_win":78.6,"p_draw":15.4,"p_loss":5.9,"recommend":"2-0","top_scores":[{"score":"2-0","prob":16.4,"e_pts":3.18},{"score":"1-0","prob":14.1,"e_pts":3.06},{"score":"3-0","prob":12.7,"e_pts":2.99}]},
+{"home":"Bélgica","away":"Egipto","xg_h":2.03,"xg_a":0.67,"p_win":69.1,"p_draw":19.9,"p_loss":11.0,"recommend":"2-0","top_scores":[{"score":"2-0","prob":13.9,"e_pts":2.77},{"score":"1-0","prob":13.5,"e_pts":2.74},{"score":"3-0","prob":9.4,"e_pts":2.54}]},
+{"home":"Arabia Saudita","away":"Uruguay","xg_h":0.79,"xg_a":1.6,"p_win":18.1,"p_draw":25.5,"p_loss":56.4,"recommend":"0-1","top_scores":[{"score":"0-1","prob":14.4,"e_pts":2.41},{"score":"1-1","prob":11.8,"e_pts":1.36},{"score":"0-2","prob":11.7,"e_pts":2.28}]},
+{"home":"Irán","away":"Nueva Zelanda","xg_h":1.58,"xg_a":0.34,"p_win":68.6,"p_draw":24.0,"p_loss":7.4,"recommend":"1-0","top_scores":[{"score":"1-0","prob":23.0,"e_pts":3.21},{"score":"2-0","prob":18.3,"e_pts":2.97},{"score":"0-0","prob":14.8,"e_pts":1.46}]},
+{"home":"Francia","away":"Senegal","xg_h":1.59,"xg_a":0.77,"p_win":56.6,"p_draw":25.6,"p_loss":17.8,"recommend":"1-0","top_scores":[{"score":"1-0","prob":14.8,"e_pts":2.44},{"score":"2-0","prob":11.9,"e_pts":2.3},{"score":"1-1","prob":11.8,"e_pts":1.36}]},
+{"home":"Irak","away":"Noruega","xg_h":0.68,"xg_a":0.98,"p_win":24.3,"p_draw":34.5,"p_loss":41.1,"recommend":"0-0","top_scores":[{"score":"0-0","prob":19.3,"e_pts":2.0},{"score":"0-1","prob":18.3,"e_pts":2.15},{"score":"1-1","prob":13.0,"e_pts":1.68}]},
+{"home":"Argentina","away":"Argelia","xg_h":1.67,"xg_a":0.92,"p_win":54.8,"p_draw":24.8,"p_loss":20.4,"recommend":"1-0","top_scores":[{"score":"1-0","prob":12.3,"e_pts":2.26},{"score":"1-1","prob":11.8,"e_pts":1.33},{"score":"2-0","prob":10.5,"e_pts":2.17}]},
+{"home":"Austria","away":"Jordania","xg_h":1.54,"xg_a":0.76,"p_win":55.6,"p_draw":26.2,"p_loss":18.2,"recommend":"1-0","top_scores":[{"score":"1-0","prob":15.2,"e_pts":2.43},{"score":"1-1","prob":12.0,"e_pts":1.39},{"score":"2-0","prob":11.9,"e_pts":2.26}]},
+{"home":"Portugal","away":"Congo DR","xg_h":2.99,"xg_a":0.73,"p_win":82.1,"p_draw":11.8,"p_loss":6.1,"recommend":"2-0","top_scores":[{"score":"2-0","prob":11.0,"e_pts":3.01},{"score":"3-0","prob":10.9,"e_pts":3.01},{"score":"4-0","prob":8.2,"e_pts":2.87}]},
+{"home":"Inglaterra","away":"Croacia","xg_h":1.61,"xg_a":0.96,"p_win":52.3,"p_draw":25.5,"p_loss":22.2,"recommend":"1-1","top_scores":[{"score":"1-1","prob":12.1,"e_pts":1.37},{"score":"1-0","prob":12.1,"e_pts":2.17},{"score":"2-0","prob":9.9,"e_pts":2.06}]},
+{"home":"Ghana","away":"Panamá","xg_h":0.78,"xg_a":1.77,"p_win":15.9,"p_draw":23.4,"p_loss":60.7,"recommend":"0-1","top_scores":[{"score":"0-1","prob":13.6,"e_pts":2.5},{"score":"0-2","prob":12.2,"e_pts":2.43},{"score":"1-1","prob":11.0,"e_pts":1.25}]},
+{"home":"Uzbekistán","away":"Colombia","xg_h":0.95,"xg_a":1.63,"p_win":21.7,"p_draw":25.3,"p_loss":53.0,"recommend":"0-1","top_scores":[{"score":"0-1","prob":12.1,"e_pts":2.2},{"score":"1-1","prob":12.0,"e_pts":1.36},{"score":"0-2","prob":10.1,"e_pts":2.09}]},
+{"home":"Rep. Checa","away":"Sudáfrica","xg_h":1.15,"xg_a":0.75,"p_win":44.9,"p_draw":31.5,"p_loss":23.6,"recommend":"1-0","top_scores":[{"score":"1-0","prob":16.9,"e_pts":2.19},{"score":"0-0","prob":15.3,"e_pts":1.71},{"score":"1-1","prob":13.2,"e_pts":1.61}]},
+{"home":"Suiza","away":"Bosnia y Herz.","xg_h":1.86,"xg_a":0.48,"p_win":70.7,"p_draw":20.8,"p_loss":8.6,"recommend":"1-0","top_scores":[{"score":"1-0","prob":17.7,"e_pts":3.01},{"score":"2-0","prob":16.7,"e_pts":2.95},{"score":"3-0","prob":10.3,"e_pts":2.64}]},
+{"home":"Canadá","away":"Qatar","xg_h":1.55,"xg_a":1.13,"p_win":46.7,"p_draw":25.8,"p_loss":27.5,"recommend":"1-1","top_scores":[{"score":"1-1","prob":12.3,"e_pts":1.39},{"score":"1-0","prob":10.4,"e_pts":1.92},{"score":"2-1","prob":9.3,"e_pts":1.87}]},
+{"home":"México","away":"Corea del Sur","xg_h":1.22,"xg_a":1.05,"p_win":39.7,"p_draw":29.1,"p_loss":31.2,"recommend":"1-1","top_scores":[{"score":"1-1","prob":13.5,"e_pts":1.55},{"score":"1-0","prob":12.3,"e_pts":1.81},{"score":"0-0","prob":10.6,"e_pts":1.4}]},
+{"home":"EUA","away":"Australia","xg_h":1.22,"xg_a":1.07,"p_win":39.2,"p_draw":28.9,"p_loss":31.8,"recommend":"1-1","top_scores":[{"score":"1-1","prob":13.5,"e_pts":1.54},{"score":"1-0","prob":12.1,"e_pts":1.78},{"score":"0-1","prob":10.5,"e_pts":1.48}]},
+{"home":"Escocia","away":"Marruecos","xg_h":0.62,"xg_a":1.26,"p_win":18.0,"p_draw":30.3,"p_loss":51.7,"recommend":"0-1","top_scores":[{"score":"0-1","prob":19.0,"e_pts":2.5},{"score":"0-0","prob":15.5,"e_pts":1.68},{"score":"1-1","prob":12.2,"e_pts":1.52}]},
+{"home":"Brasil","away":"Haití","xg_h":4.12,"xg_a":0.28,"p_win":96.0,"p_draw":3.4,"p_loss":0.7,"recommend":"4-0","top_scores":[{"score":"4-0","prob":15.7,"e_pts":3.66},{"score":"3-0","prob":15.2,"e_pts":3.64},{"score":"5-0","prob":12.9,"e_pts":3.52}]},
+{"home":"Turquía","away":"Paraguay","xg_h":1.7,"xg_a":0.94,"p_win":55.0,"p_draw":24.5,"p_loss":20.5,"recommend":"1-0","top_scores":[{"score":"1-0","prob":11.9,"e_pts":2.24},{"score":"1-1","prob":11.7,"e_pts":1.32},{"score":"2-0","prob":10.3,"e_pts":2.17}]},
+{"home":"Países Bajos","away":"Suecia","xg_h":1.72,"xg_a":0.92,"p_win":56.0,"p_draw":24.3,"p_loss":19.7,"recommend":"1-0","top_scores":[{"score":"1-0","prob":12.0,"e_pts":2.28},{"score":"1-1","prob":11.6,"e_pts":1.31},{"score":"2-0","prob":10.6,"e_pts":2.21}]},
+{"home":"Alemania","away":"Costa de Marfil","xg_h":1.96,"xg_a":1.06,"p_win":58.0,"p_draw":22.2,"p_loss":19.8,"recommend":"1-1","top_scores":[{"score":"1-1","prob":10.4,"e_pts":1.18},{"score":"2-1","prob":9.9,"e_pts":2.24},{"score":"2-0","prob":9.4,"e_pts":2.21}]},
+{"home":"Ecuador","away":"Curazao","xg_h":2.03,"xg_a":0.4,"p_win":76.1,"p_draw":17.9,"p_loss":6.0,"recommend":"2-0","top_scores":[{"score":"2-0","prob":18.2,"e_pts":3.19},{"score":"1-0","prob":17.7,"e_pts":3.17},{"score":"3-0","prob":12.3,"e_pts":2.9}]},
+{"home":"Túnez","away":"Japón","xg_h":1.0,"xg_a":1.02,"p_win":33.8,"p_draw":31.3,"p_loss":34.9,"recommend":"1-1","top_scores":[{"score":"1-1","prob":13.8,"e_pts":1.63},{"score":"0-0","prob":13.6,"e_pts":1.62},{"score":"0-1","prob":13.2,"e_pts":1.71}]},
+{"home":"España","away":"Arabia Saudita","xg_h":2.53,"xg_a":0.54,"p_win":80.4,"p_draw":13.9,"p_loss":5.8,"recommend":"2-0","top_scores":[{"score":"2-0","prob":14.9,"e_pts":3.16},{"score":"3-0","prob":12.6,"e_pts":3.04},{"score":"1-0","prob":11.7,"e_pts":2.99}]},
+{"home":"Bélgica","away":"Irán","xg_h":1.83,"xg_a":0.85,"p_win":60.3,"p_draw":23.0,"p_loss":16.8,"recommend":"1-0","top_scores":[{"score":"1-0","prob":12.3,"e_pts":2.42},{"score":"2-0","prob":11.5,"e_pts":2.38},{"score":"1-1","prob":10.9,"e_pts":1.23}]},
+{"home":"Uruguay","away":"Cabo Verde","xg_h":1.55,"xg_a":0.62,"p_win":59.7,"p_draw":25.8,"p_loss":14.5,"recommend":"1-0","top_scores":[{"score":"1-0","prob":17.5,"e_pts":2.66},{"score":"2-0","prob":13.7,"e_pts":2.48},{"score":"0-0","prob":11.7,"e_pts":1.36}]},
+{"home":"Nueva Zelanda","away":"Egipto","xg_h":0.37,"xg_a":1.24,"p_win":10.8,"p_draw":30.7,"p_loss":58.5,"recommend":"0-1","top_scores":[{"score":"0-1","prob":24.6,"e_pts":2.98},{"score":"0-0","prob":20.2,"e_pts":1.93},{"score":"0-2","prob":15.4,"e_pts":2.52}]},
+{"home":"Argentina","away":"Austria","xg_h":2.04,"xg_a":0.6,"p_win":71.0,"p_draw":19.4,"p_loss":9.6,"recommend":"2-0","top_scores":[{"score":"2-0","prob":14.9,"e_pts":2.87},{"score":"1-0","prob":14.4,"e_pts":2.85},{"score":"3-0","prob":10.1,"e_pts":2.64}]},
+{"home":"Francia","away":"Irak","xg_h":2.73,"xg_a":0.38,"p_win":86.1,"p_draw":10.7,"p_loss":3.2,"recommend":"2-0","top_scores":[{"score":"2-0","prob":16.7,"e_pts":3.42},{"score":"3-0","prob":15.2,"e_pts":3.35},{"score":"1-0","prob":12.2,"e_pts":3.19}]},
+{"home":"Noruega","away":"Senegal","xg_h":0.65,"xg_a":1.11,"p_win":21.1,"p_draw":32.6,"p_loss":46.2,"recommend":"0-1","top_scores":[{"score":"0-1","prob":18.8,"e_pts":2.33},{"score":"0-0","prob":17.5,"e_pts":1.85},{"score":"1-1","prob":12.7,"e_pts":1.61}]},
+{"home":"Jordania","away":"Argelia","xg_h":0.63,"xg_a":2.35,"p_win":8.0,"p_draw":16.3,"p_loss":75.7,"recommend":"0-2","top_scores":[{"score":"0-2","prob":14.1,"e_pts":2.97},{"score":"0-1","prob":11.8,"e_pts":2.86},{"score":"0-3","prob":11.0,"e_pts":2.82}]},
+{"home":"Portugal","away":"Uzbekistán","xg_h":2.57,"xg_a":0.66,"p_win":78.3,"p_draw":14.5,"p_loss":7.2,"recommend":"2-0","top_scores":[{"score":"2-0","prob":13.1,"e_pts":3.0},{"score":"3-0","prob":11.2,"e_pts":2.91},{"score":"1-0","prob":10.1,"e_pts":2.85}]},
+{"home":"Inglaterra","away":"Ghana","xg_h":2.05,"xg_a":0.67,"p_win":69.5,"p_draw":19.7,"p_loss":10.9,"recommend":"2-0","top_scores":[{"score":"2-0","prob":13.9,"e_pts":2.78},{"score":"1-0","prob":13.3,"e_pts":2.75},{"score":"3-0","prob":9.5,"e_pts":2.56}]},
+{"home":"Panamá","away":"Croacia","xg_h":0.65,"xg_a":2.47,"p_win":7.6,"p_draw":15.3,"p_loss":77.1,"recommend":"0-2","top_scores":[{"score":"0-2","prob":13.5,"e_pts":2.99},{"score":"0-3","prob":11.1,"e_pts":2.87},{"score":"0-1","prob":10.8,"e_pts":2.85}]},
+{"home":"Colombia","away":"Congo DR","xg_h":2.0,"xg_a":0.97,"p_win":61.0,"p_draw":21.6,"p_loss":17.4,"recommend":"2-0","top_scores":[{"score":"2-0","prob":10.3,"e_pts":2.34},{"score":"1-1","prob":10.2,"e_pts":1.16},{"score":"1-0","prob":10.0,"e_pts":2.33}]},
+{"home":"Suiza","away":"Canadá","xg_h":1.03,"xg_a":1.73,"p_win":22.2,"p_draw":24.3,"p_loss":53.5,"recommend":"1-1","top_scores":[{"score":"1-1","prob":11.5,"e_pts":1.31},{"score":"1-0","prob":10.7,"e_pts":2.14},{"score":"2-1","prob":9.8,"e_pts":2.09}]},
+{"home":"Bosnia y Herz.","away":"Qatar","xg_h":1.84,"xg_a":0.47,"p_win":70.5,"p_draw":21.0,"p_loss":8.5,"recommend":"1-0","top_scores":[{"score":"1-0","prob":18.1,"e_pts":3.02},{"score":"2-0","prob":16.8,"e_pts":2.96},{"score":"3-0","prob":10.3,"e_pts":2.63}]},
+{"home":"Marruecos","away":"Haití","xg_h":2.34,"xg_a":0.43,"p_win":80.2,"p_draw":14.7,"p_loss":5.1,"recommend":"2-0","top_scores":[{"score":"2-0","prob":17.2,"e_pts":3.27},{"score":"1-0","prob":14.6,"e_pts":3.14},{"score":"3-0","prob":13.4,"e_pts":3.08}]},
+{"home":"Escocia","away":"Brasil","xg_h":0.4,"xg_a":2.22,"p_win":5.2,"p_draw":15.7,"p_loss":79.2,"recommend":"0-2","top_scores":[{"score":"0-2","prob":18.0,"e_pts":3.27},{"score":"0-1","prob":16.0,"e_pts":3.18},{"score":"0-3","prob":13.3,"e_pts":3.04}]},
+{"home":"Rep. Checa","away":"México","xg_h":1.03,"xg_a":1.14,"p_win":32.2,"p_draw":29.9,"p_loss":37.8,"recommend":"1-1","top_scores":[{"score":"1-1","prob":13.7,"e_pts":1.58},{"score":"0-1","prob":12.7,"e_pts":1.77},{"score":"0-0","prob":11.7,"e_pts":1.48}]},
+{"home":"Sudáfrica","away":"Corea del Sur","xg_h":0.69,"xg_a":1.28,"p_win":19.8,"p_draw":29.8,"p_loss":50.4,"recommend":"0-1","top_scores":[{"score":"0-1","prob":17.6,"e_pts":2.39},{"score":"0-0","prob":14.2,"e_pts":1.61},{"score":"1-1","prob":12.6,"e_pts":1.52}]},
+{"home":"Ecuador","away":"Alemania","xg_h":1.29,"xg_a":1.95,"p_win":25.0,"p_draw":22.5,"p_loss":52.5,"recommend":"1-1","top_scores":[{"score":"1-1","prob":10.1,"e_pts":1.18},{"score":"1-2","prob":9.6,"e_pts":2.06},{"score":"0-2","prob":7.5,"e_pts":1.95}]},
+{"home":"Curazao","away":"Costa de Marfil","xg_h":0.54,"xg_a":1.46,"p_win":12.2,"p_draw":25.1,"p_loss":62.7,"recommend":"0-1","top_scores":[{"score":"0-1","prob":18.7,"e_pts":2.82},{"score":"0-2","prob":15.0,"e_pts":2.63},{"score":"0-0","prob":12.2,"e_pts":1.37}]},
+{"home":"Japón","away":"Suecia","xg_h":1.08,"xg_a":1.14,"p_win":33.7,"p_draw":29.6,"p_loss":36.7,"recommend":"1-1","top_scores":[{"score":"1-1","prob":13.7,"e_pts":1.57},{"score":"0-1","prob":12.1,"e_pts":1.71},{"score":"1-0","prob":11.4,"e_pts":1.58}]},
+{"home":"Túnez","away":"Países Bajos","xg_h":0.83,"xg_a":1.59,"p_win":19.3,"p_draw":25.7,"p_loss":55.1,"recommend":"0-1","top_scores":[{"score":"0-1","prob":13.9,"e_pts":2.35},{"score":"1-1","prob":12.0,"e_pts":1.37},{"score":"0-2","prob":11.2,"e_pts":2.21}]},
+{"home":"Turquía","away":"EUA","xg_h":0.51,"xg_a":2.39,"p_win":6.0,"p_draw":14.9,"p_loss":79.1,"recommend":"0-2","top_scores":[{"score":"0-2","prob":15.8,"e_pts":3.16},{"score":"0-1","prob":13.0,"e_pts":3.02},{"score":"0-3","prob":12.6,"e_pts":3.0}]},
+{"home":"Paraguay","away":"Australia","xg_h":1.68,"xg_a":0.38,"p_win":69.7,"p_draw":22.7,"p_loss":7.7,"recommend":"1-0","top_scores":[{"score":"1-0","prob":21.2,"e_pts":3.15},{"score":"2-0","prob":18.0,"e_pts":2.99},{"score":"0-0","prob":12.9,"e_pts":1.33}]},
+{"home":"Senegal","away":"Irak","xg_h":1.54,"xg_a":0.43,"p_win":64.9,"p_draw":25.2,"p_loss":9.8,"recommend":"1-0","top_scores":[{"score":"1-0","prob":21.3,"e_pts":3.01},{"score":"2-0","prob":16.5,"e_pts":2.77},{"score":"0-0","prob":14.2,"e_pts":1.47}]},
+{"home":"Noruega","away":"Francia","xg_h":0.56,"xg_a":1.98,"p_win":9.3,"p_draw":19.8,"p_loss":70.9,"recommend":"0-2","top_scores":[{"score":"0-2","prob":15.5,"e_pts":2.9},{"score":"0-1","prob":15.4,"e_pts":2.9},{"score":"0-3","prob":10.2,"e_pts":2.64}]},
+{"home":"Uruguay","away":"España","xg_h":0.91,"xg_a":1.5,"p_win":22.6,"p_draw":26.7,"p_loss":50.7,"recommend":"0-1","top_scores":[{"score":"0-1","prob":13.2,"e_pts":2.18},{"score":"1-1","prob":12.5,"e_pts":1.43},{"score":"0-2","prob":10.1,"e_pts":2.03}]},
+{"home":"Cabo Verde","away":"Arabia Saudita","xg_h":1.46,"xg_a":0.43,"p_win":62.9,"p_draw":26.6,"p_loss":10.5,"recommend":"1-0","top_scores":[{"score":"1-0","prob":21.8,"e_pts":2.98},{"score":"2-0","prob":16.1,"e_pts":2.69},{"score":"0-0","prob":15.3,"e_pts":1.56}]},
+{"home":"Egipto","away":"Irán","xg_h":1.31,"xg_a":0.61,"p_win":53.4,"p_draw":29.5,"p_loss":17.1,"recommend":"1-0","top_scores":[{"score":"1-0","prob":18.9,"e_pts":2.55},{"score":"0-0","prob":14.9,"e_pts":1.63},{"score":"2-0","prob":12.6,"e_pts":2.23}]},
+{"home":"Nueva Zelanda","away":"Bélgica","xg_h":0.28,"xg_a":2.86,"p_win":1.9,"p_draw":8.8,"p_loss":89.3,"recommend":"0-2","top_scores":[{"score":"0-2","prob":17.9,"e_pts":3.57},{"score":"0-3","prob":17.0,"e_pts":3.53},{"score":"0-1","prob":12.4,"e_pts":3.3}]},
+{"home":"Croacia","away":"Ghana","xg_h":1.7,"xg_a":0.93,"p_win":55.2,"p_draw":24.5,"p_loss":20.2,"recommend":"1-0","top_scores":[{"score":"1-0","prob":12.0,"e_pts":2.26},{"score":"1-1","prob":11.7,"e_pts":1.32},{"score":"2-0","prob":10.4,"e_pts":2.18}]},
+{"home":"Panamá","away":"Inglaterra","xg_h":0.46,"xg_a":2.97,"p_win":3.3,"p_draw":9.7,"p_loss":87.0,"recommend":"0-2","top_scores":[{"score":"0-2","prob":14.4,"e_pts":3.33},{"score":"0-3","prob":14.3,"e_pts":3.32},{"score":"0-4","prob":10.6,"e_pts":3.14}]},
+{"home":"Colombia","away":"Portugal","xg_h":1.02,"xg_a":1.23,"p_win":30.2,"p_draw":29.1,"p_loss":40.6,"recommend":"1-1","top_scores":[{"score":"1-1","prob":13.5,"e_pts":1.55},{"score":"0-1","prob":12.7,"e_pts":1.85},{"score":"0-0","prob":10.8,"e_pts":1.42}]},
+{"home":"Congo DR","away":"Uzbekistán","xg_h":1.99,"xg_a":0.9,"p_win":62.5,"p_draw":21.4,"p_loss":16.1,"recommend":"2-0","top_scores":[{"score":"2-0","prob":11.0,"e_pts":2.43},{"score":"1-0","prob":10.8,"e_pts":2.42},{"score":"1-1","prob":10.2,"e_pts":1.15}]},
+{"home":"Argelia","away":"Austria","xg_h":2.01,"xg_a":0.4,"p_win":75.7,"p_draw":18.1,"p_loss":6.2,"recommend":"2-0","top_scores":[{"score":"2-0","prob":18.2,"e_pts":3.18},{"score":"1-0","prob":17.9,"e_pts":3.17},{"score":"3-0","prob":12.2,"e_pts":2.88}]},
+{"home":"Jordania","away":"Argentina","xg_h":0.45,"xg_a":3.07,"p_win":3.0,"p_draw":9.0,"p_loss":88.0,"recommend":"0-3","top_scores":[{"score":"0-3","prob":14.5,"e_pts":3.36},{"score":"0-2","prob":14.1,"e_pts":3.35},{"score":"0-4","prob":11.1,"e_pts":3.2}]}
 ];
-
-function getStatsData(home,away){ return STATS_DATA.find(d=>d.home===home&&d.away===away)||null; }
+function getSD(h,a){return STATS_DATA.find(d=>d.home===h&&d.away===a)||null;}
 
 // ─── GROUPS ──────────────────────────────────────────────────────────────────
 const GROUPS={A:['México','Sudáfrica','Corea del Sur','Rep. Checa'],B:['Canadá','Bosnia y Herz.','Qatar','Suiza'],C:['Brasil','Marruecos','Haití','Escocia'],D:['EUA','Paraguay','Australia','Turquía'],E:['Alemania','Curazao','Costa de Marfil','Ecuador'],F:['Países Bajos','Japón','Suecia','Túnez'],G:['Bélgica','Egipto','Irán','Nueva Zelanda'],H:['España','Cabo Verde','Arabia Saudita','Uruguay'],I:['Francia','Senegal','Irak','Noruega'],J:['Argentina','Argelia','Austria','Jordania'],K:['Portugal','Congo DR','Uzbekistán','Colombia'],L:['Inglaterra','Croacia','Ghana','Panamá']};
@@ -513,20 +527,11 @@ function saveState(){try{localStorage.setItem(LS_KEY,JSON.stringify(state));}cat
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 function parseScore(s){if(!s)return null;const p=s.split('-');if(p.length!==2)return null;const a=parseInt(p[0]),b=parseInt(p[1]);if(isNaN(a)||isNaN(b))return null;return{h:a,a:b};}
 function scoreResult(s){const p=parseScore(s);if(!p)return null;return p.h>p.a?'W':p.h<p.a?'L':'D';}
-function calcPoints(pred,real){
-  // 3 pts result + 2 pts exact score = 5 max
-  if(!pred||!real)return 0;
-  if(pred===real)return 5;
-  const pr=scoreResult(pred),rr=scoreResult(real);
-  if(pr&&rr&&pr===rr)return 3;
-  return 0;
-}
+function calcPoints(pred,real){if(!pred||!real)return 0;if(pred===real)return 5;const pr=scoreResult(pred),rr=scoreResult(real);if(pr&&rr&&pr===rr)return 3;return 0;}
 function getMeta(m){const sp=state.preds[m.id]||{};return{pred:sp.pred!==undefined?sp.pred:m.pred,conf:sp.conf!==undefined?sp.conf:m.conf,winPct:sp.winPct!==undefined?sp.winPct:m.winPct,drawPct:sp.drawPct!==undefined?sp.drawPct:m.drawPct,lossPct:sp.lossPct!==undefined?sp.lossPct:m.lossPct,players:sp.players||m.players,keys:sp.keys||m.keys,warns:sp.warns||m.warns,tactic:sp.tactic!==undefined?sp.tactic:m.tactic,real:state.results[m.id]||null,live:state.live?state.live[m.id]:null};}
 function totalPts(){return MATCHES.reduce((s,m)=>{const{pred,real}=getMeta(m);return s+calcPoints(pred,real);},0);}
 function analyzedCount(){return MATCHES.filter(m=>getMeta(m).pred).length;}
 function confClass(c){return c>=65?'high':c>=50?'med':'low';}
-
-// ─── TOAST ───────────────────────────────────────────────────────────────────
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
 
 // ─── SYNC ────────────────────────────────────────────────────────────────────
@@ -544,17 +549,15 @@ async function syncResults(){
       const homeN=norm(ev.strHomeTeam),awayN=norm(ev.strAwayTeam);
       const match=MATCHES.find(m=>m.home===homeN&&m.away===awayN);if(!match)return;
       const hS=ev.intHomeScore,aS=ev.intAwayScore,status=ev.strStatus||'';
-      const isLive=['HT','1H','2H','ET','PT'].includes(status);
-      const isDone=['FT','AET','PEN'].includes(status);
+      const isLive=['HT','1H','2H','ET','PT'].includes(status),isDone=['FT','AET','PEN'].includes(status);
       if(isDone&&hS!==null&&hS!==''&&aS!==null&&aS!==''){const ns=`${hS}-${aS}`;if(state.results[match.id]!==ns){state.results[match.id]=ns;updated++;}}
       if(isLive&&hS!==null&&aS!==null)liveMap[match.id]=`${hS}-${aS}`;
     });
     state.live=liveMap;state.lastSync=new Date().toISOString();saveState();
     const now=new Date().toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});
     dot.className='sync-dot ok';txt.textContent=`Sincronizado ${now} · ${updated} resultado${updated!==1?'s':''} actualizado${updated!==1?'s':''}.`;
-    updateHeader();renderMatches();renderBanner();
-    if(activeTab==='grupos')renderGroups();
-  }catch(err){dot.className='sync-dot err';txt.textContent='Sin conexión con TheSportsDB — ingresa resultados manualmente.';}
+    updateHeader();renderMatches();renderBanner();if(activeTab==='grupos')renderGroups();
+  }catch(err){dot.className='sync-dot err';txt.textContent='Sin conexión — ingresa resultados manualmente.';}
   btn.classList.remove('syncing');btn.textContent='⟳ Sincronizar';syncing=false;
 }
 
@@ -563,12 +566,12 @@ const SESSIONS=[{date:'2026-06-10',label:'Miércoles 10 jun',days:'11, 12 y 13 d
 function renderBanner(){
   const banner=document.getElementById('reminder-banner'),icon=document.getElementById('reminder-icon'),title=document.getElementById('reminder-title'),sub=document.getElementById('reminder-sub');
   const now=new Date(),today=now.toISOString().slice(0,10);
-  if(state.live&&Object.keys(state.live).length>0){banner.className='reminder-banner playing';banner.style.display='flex';icon.textContent='🔴';title.textContent='Partidos en vivo ahora';sub.textContent='Presiona Sincronizar para ver los marcadores en tiempo real.';return;}
+  if(state.live&&Object.keys(state.live).length>0){banner.className='reminder-banner playing';banner.style.display='flex';icon.textContent='🔴';title.textContent='Partidos en vivo';sub.textContent='Presiona Sincronizar para ver los marcadores en tiempo real.';return;}
   const next=SESSIONS.find(s=>s.date>=today);if(!next){banner.style.display='none';return;}
   const diffDays=Math.ceil((new Date(next.date+'T12:00:00')-now)/(1000*60*60*24));
   const pending=MATCHES.filter(m=>!getMeta(m).pred&&m.date>today).length;
   if(pending===0){banner.style.display='none';return;}
-  if(diffDays<=0){banner.className='reminder-banner urgent';banner.style.display='flex';icon.textContent='⚡';title.textContent=`¡Hoy toca analizar! (${next.label})`;sub.textContent=`Entra a Claude — ${next.count} partidos del ${next.days} sin pronóstico.`;}
+  if(diffDays<=0){banner.className='reminder-banner urgent';banner.style.display='flex';icon.textContent='⚡';title.textContent=`Hoy toca analizar — ${next.label}`;sub.textContent=`Entra a Claude · ${next.count} partidos del ${next.days} sin pronóstico.`;}
   else if(diffDays===1){banner.className='reminder-banner urgent';banner.style.display='flex';icon.textContent='⏰';title.textContent=`Mañana toca analizar — ${next.label}`;sub.textContent=`${pending} partidos pendientes (${next.days}).`;}
   else if(diffDays<=3){banner.className='reminder-banner soon';banner.style.display='flex';icon.textContent='📅';title.textContent=`Análisis en ${diffDays} días — ${next.label}`;sub.textContent=`${pending} partidos pendientes (${next.days}).`;}
   else{banner.style.display='none';}
@@ -577,9 +580,7 @@ function renderBanner(){
 // ─── TABS ────────────────────────────────────────────────────────────────────
 let activeTab='partidos';
 function showTab(tab){activeTab=tab;document.querySelectorAll('.nav-tab').forEach((b,i)=>b.classList.toggle('active',['partidos','grupos','marcador'][i]===tab));document.getElementById('tab-partidos').style.display=tab==='partidos'?'block':'none';document.getElementById('tab-grupos').style.display=tab==='grupos'?'block':'none';document.getElementById('tab-marcador').style.display=tab==='marcador'?'block':'none';if(tab==='grupos')renderGroups();if(tab==='marcador')renderScore();}
-
-// ─── HEADER ──────────────────────────────────────────────────────────────────
-function updateHeader(){document.getElementById('hdr-pts').textContent=totalPts()+' pts';document.getElementById('hdr-analyzed').textContent=analyzedCount()+'/72';}
+function updateHeader(){document.getElementById('hdr-pts').textContent=totalPts();document.getElementById('hdr-analyzed').textContent=analyzedCount()+'/72';}
 
 // ─── FILTER ──────────────────────────────────────────────────────────────────
 const DAYS=[...new Set(MATCHES.map(m=>m.day))];
@@ -587,7 +588,7 @@ let activeFilter='all';
 function renderFilters(){document.getElementById('filter-bar').innerHTML='<button class="filter-btn active" onclick="setFilter(\'all\')">Todos</button>'+DAYS.map(d=>`<button class="filter-btn" onclick="setFilter('${d.replace(/'/g,"\\'")}') ">${d}</button>`).join('');}
 function setFilter(f){activeFilter=f;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim()===(f==='all'?'Todos':f)));renderMatches();}
 
-// ─── MATCHES ─────────────────────────────────────────────────────────────────
+// ─── MATCH CARDS ─────────────────────────────────────────────────────────────
 let openDetails={};
 function renderMatches(){
   const c=document.getElementById('matches-container');
@@ -595,7 +596,7 @@ function renderMatches(){
   const days=[...new Set(ms.map(m=>m.day))];
   c.innerHTML=days.map(day=>{
     const dm=ms.filter(m=>m.day===day);
-    return`<div class="day-section"><div class="day-header"><div class="day-pill">${day}</div><div class="day-count">${dm.length} partido${dm.length>1?'s':''}</div><div class="day-line"></div></div>${dm.map(m=>renderCard(m)).join('')}</div>`;
+    return`<div class="day-section"><div class="day-header"><div class="day-label">${day}</div><div class="day-count">${dm.length} partido${dm.length>1?'s':''}</div><div class="day-line"></div></div>${dm.map(m=>renderCard(m)).join('')}</div>`;
   }).join('');
 }
 
@@ -607,91 +608,52 @@ function renderCard(m){
   else if(hasPred&&hasReal){if(pts===5)cls+=' correct-exact';else if(pts===3)cls+=' correct-result';else cls+=' wrong';}
   else if(hasPred)cls+=' has-pred';
 
-  // Stats data
-  const sd=getStatsData(m.home,m.away);
-  const maxProb=sd?Math.max(...sd.top_scores.map(s=>s.prob)):1;
+  const sd=getSD(m.home,m.away);
+  const maxP=sd?Math.max(...sd.top_scores.map(s=>s.prob)):1;
 
-  // Real score display
   let realHtml='';
-  if(hasReal)realHtml=`<div class="real-score-badge">${real}</div>`;
-  else if(isLive)realHtml=`<div class="live-score-badge">EN VIVO ${live}</div>`;
-
-  // Points badge
+  if(hasReal)realHtml=`<span class="real-score-badge">${real}</span>`;
+  else if(isLive)realHtml=`<span class="live-score-badge">${live}</span>`;
   let ptsHtml='';
-  if(hasReal&&hasPred){
-    if(pts===5)ptsHtml=`<div class="pts-earned p5">★ +5 pts</div>`;
-    else if(pts===3)ptsHtml=`<div class="pts-earned p3">✓ +3 pts</div>`;
-    else ptsHtml=`<div class="pts-earned p0">✗ 0 pts</div>`;
-  }
+  if(hasReal&&hasPred){if(pts===5)ptsHtml=`<span class="pts-earned p5">★ +5</span>`;else if(pts===3)ptsHtml=`<span class="pts-earned p3">✓ +3</span>`;else ptsHtml=`<span class="pts-earned p0">✗ 0</span>`;}
 
-  // My prediction column
-  const myPredHtml=hasPred?`
+  const myCol=hasPred?`
     <div class="my-pred-score">${pred}</div>
-    ${winPct!=null?`<div class="win-probs">
-      <div class="prob-seg w">${winPct}%</div>
-      <div class="prob-seg d">${drawPct}%</div>
-      <div class="prob-seg l">${lossPct}%</div>
-    </div>`:''}
+    ${winPct!=null?`<div class="win-probs"><div class="prob-seg w">${winPct}%</div><div class="prob-seg d">${drawPct}%</div><div class="prob-seg l">${lossPct}%</div></div>`:''}
     ${conf?`<div class="conf-row"><span class="conf-label">Confianza</span><div class="conf-track"><div class="conf-fill ${confClass(conf)}" style="width:${conf}%"></div></div><span class="conf-pct">${conf}%</span></div>`:''}
   `:`<div class="my-pred-score pending">Pendiente de análisis</div>`;
 
-  // Stats prediction column
-  const statsPredHtml=sd?`
+  const statsCol=sd?`
     <div class="stat-rec-score">${sd.recommend}</div>
-    <div class="stat-xg">
-      <span class="xg-label">xG</span>
-      <span class="xg-val">${sd.xg_h}</span>
-      <div class="xg-bar-wrap"><div class="xg-home" style="width:${Math.round(sd.xg_h/(sd.xg_h+sd.xg_a)*100)}%"></div><div class="xg-away" style="width:${Math.round(sd.xg_a/(sd.xg_h+sd.xg_a)*100)}%"></div></div>
-      <span class="xg-val">${sd.xg_a}</span>
-    </div>
-    <div class="stat-options">
-      ${sd.top_scores.map((s,i)=>`<div class="stat-option${i===0?' best':''}">
-        <span class="stat-option-score">${s.score}</span>
-        <div class="stat-option-bar-wrap"><div class="stat-option-bar" style="width:${Math.round(s.prob/maxProb*100)}%"></div></div>
-        <span class="stat-option-prob">${s.prob}%</span>
-        <span class="stat-option-pts">${s.e_pts}pts</span>
-      </div>`).join('')}
-    </div>
-  `:`<div style="font-size:12px;color:var(--text-4);padding:8px 0">Sin datos estadísticos</div>`;
+    <div class="stat-xg-row"><span class="xg-tag">xG</span><span class="xg-num">${sd.xg_h}</span><div class="xg-bar-wrap"><div class="xg-home" style="width:${Math.round(sd.xg_h/(sd.xg_h+sd.xg_a)*100)}%"></div><div class="xg-away" style="width:${Math.round(sd.xg_a/(sd.xg_h+sd.xg_a)*100)}%"></div></div><span class="xg-num">${sd.xg_a}</span></div>
+    <div class="stat-options">${sd.top_scores.map((s,i)=>`<div class="stat-opt${i===0?' best':''}"><span class="stat-opt-score">${s.score}</span><div class="stat-opt-bar-wrap"><div class="stat-opt-bar" style="width:${Math.round(s.prob/maxP*100)}%"></div></div><span class="stat-opt-prob">${s.prob}%</span><span class="stat-opt-pts">${s.e_pts}p</span></div>`).join('')}</div>
+  `:`<div style="font-size:11px;color:var(--text3);padding:6px 0;letter-spacing:.5px">Sin datos estadísticos</div>`;
 
-  // Detail panel
-  const detailHtml=hasPred?`
-    <div class="match-detail${open?' open':''}" id="detail-${m.id}">
-      <div class="detail-grid">
-        <div class="detail-block">
-          <div class="detail-subtitle">Jugadores clave</div>
-          <div class="tag-list">${(players||[]).map(p=>`<span class="tag player">${p}</span>`).join('')}</div>
-          <div class="detail-subtitle" style="margin-top:10px">Factores</div>
-          <div class="tag-list">${(keys||[]).map(k=>`<span class="tag key">${k}</span>`).join('')}</div>
-        </div>
-        <div class="detail-block">
-          ${(warns||[]).length?`<div class="detail-subtitle">Alertas</div><div class="tag-list">${warns.map(w=>`<span class="tag warn">⚠ ${w}</span>`).join('')}</div>`:''}
-        </div>
-        ${tactic?`<div class="detail-block detail-full"><div class="detail-subtitle">Táctica esperada</div><div class="tactic-text">${tactic}</div></div>`:''}
+  const detailHtml=hasPred?`<div class="match-detail${open?' open':''}" id="detail-${m.id}">
+    <div class="detail-grid">
+      <div><div class="detail-subtitle">Jugadores clave</div><div class="tag-list">${(players||[]).map(p=>`<span class="tag player">${p}</span>`).join('')}</div>
+      ${(keys||[]).length?`<div class="detail-subtitle" style="margin-top:10px">Factores</div><div class="tag-list">${keys.map(k=>`<span class="tag key">${k}</span>`).join('')}</div>`:''}
       </div>
-    </div>`:'';
+      <div>${(warns||[]).length?`<div class="detail-subtitle">Alertas</div><div class="tag-list">${warns.map(w=>`<span class="tag warn">⚠ ${w}</span>`).join('')}</div>`:''}
+      </div>
+      ${tactic?`<div class="detail-full"><div class="detail-subtitle">Táctica esperada</div><div class="tactic-text">${tactic}</div></div>`:''}
+    </div></div>`:'';
 
-  const inputHtml=hasPred?`
-    <div class="result-input-row">
-      <span class="result-label">Resultado real:</span>
-      <input class="score-input" id="rh-${m.id}" type="number" min="0" max="20" placeholder="0" value="${real?parseScore(real).h:''}">
-      <span class="score-sep">–</span>
-      <input class="score-input" id="ra-${m.id}" type="number" min="0" max="20" placeholder="0" value="${real?parseScore(real).a:''}">
-      <button class="save-btn" onclick="saveResult(${m.id})">Guardar</button>
-      ${hasReal?`<button class="clear-btn" onclick="clearResult(${m.id})">Borrar</button><span class="auto-badge">✓ auto-sync</span>`:''}
-    </div>`:`
-    <div class="pred-pending-row">
-      <span class="pred-pending-label">⏳ Pronóstico pendiente de análisis con Claude</span>
-      <button class="set-pred-btn" onclick="openPredInput(${m.id})">Ingresar</button>
-    </div>`;
+  const inputHtml=hasPred?`<div class="result-input-row">
+    <span class="result-label">Resultado real</span>
+    <input class="score-input" id="rh-${m.id}" type="number" min="0" max="20" placeholder="0" value="${real?parseScore(real).h:''}">
+    <span class="score-sep">–</span>
+    <input class="score-input" id="ra-${m.id}" type="number" min="0" max="20" placeholder="0" value="${real?parseScore(real).a:''}">
+    <button class="save-btn" onclick="saveResult(${m.id})">Guardar</button>
+    ${hasReal?`<button class="clear-btn" onclick="clearResult(${m.id})">✕</button><span class="auto-badge">auto-sync ✓</span>`:''}
+    </div>`:`<div class="pred-pending-row"><span class="pred-pending-label">⏳ Pendiente de análisis con Claude</span><button class="set-pred-btn" onclick="openPredInput(${m.id})">Ingresar</button></div>`;
 
   return`<div class="${cls}" id="card-${m.id}">
     <div class="match-top">
       <div class="match-meta">
         <span class="group-badge">Grupo ${m.group}</span>
-        ${isLive?`<span class="live-pill">EN VIVO</span>`:`<span class="match-time-label">${m.time} (CR)</span>`}
-        ${ptsHtml}
-        ${realHtml}
+        ${isLive?`<span class="live-pill">En Vivo</span>`:`<span class="match-time-label">${m.time} · Costa Rica</span>`}
+        ${ptsHtml}${realHtml}
       </div>
       <div class="teams-row">
         <div class="team-name">${m.home}</div>
@@ -700,51 +662,38 @@ function renderCard(m){
       </div>
       <div class="pred-columns">
         <div class="pred-col">
-          <div class="pred-col-header mine">
-            <span class="pred-col-icon">👑</span>
-            <span class="pred-col-title mine">Rey de los Pronósticos</span>
-          </div>
-          <div class="pred-col-body">${myPredHtml}</div>
+          <div class="pred-col-header mine"><span class="pred-col-icon">👑</span><span class="pred-col-title mine">Rey de los Pronósticos</span></div>
+          <div class="pred-col-body">${myCol}</div>
         </div>
         <div class="pred-col">
-          <div class="pred-col-header stats">
-            <span class="pred-col-icon">📊</span>
-            <span class="pred-col-title stats">Pronóstico Estadístico</span>
-          </div>
-          <div class="pred-col-body">${statsPredHtml}</div>
+          <div class="pred-col-header stats"><span class="pred-col-icon">📊</span><span class="pred-col-title stats">Pronóstico Estadístico</span></div>
+          <div class="pred-col-body">${statsCol}</div>
         </div>
       </div>
     </div>
     ${detailHtml}
-    ${hasPred?`<button class="detail-toggle" onclick="toggleDetail(${m.id})"><span class="detail-toggle-icon${open?' open':''}">▾</span> ${open?'Ocultar análisis':'Ver análisis completo'}</button>`:''}
+    ${hasPred?`<button class="detail-toggle" onclick="toggleDetail(${m.id})"><span class="dtgl-icon${open?' open':''}">▾</span> ${open?'Ocultar análisis':'Ver análisis completo'}</button>`:''}
     ${inputHtml}
   </div>`;
 }
 
-function toggleDetail(id){openDetails[id]=!openDetails[id];document.getElementById(`detail-${id}`)?.classList.toggle('open',openDetails[id]);renderMatches();}
+function toggleDetail(id){openDetails[id]=!openDetails[id];renderMatches();}
 function saveResult(id){const h=parseInt(document.getElementById(`rh-${id}`).value),a=parseInt(document.getElementById(`ra-${id}`).value);if(isNaN(h)||isNaN(a))return;state.results[id]=`${h}-${a}`;saveState();updateHeader();renderMatches();if(activeTab==='grupos')renderGroups();}
 function clearResult(id){delete state.results[id];saveState();updateHeader();renderMatches();}
-function openPredInput(id){const row=document.querySelector(`#card-${id} .pred-pending-row`);if(!row)return;row.innerHTML=`<span class="result-label">Mi pronóstico:</span><input class="score-input" id="ph-${id}" type="number" min="0" max="20" placeholder="0"><span class="score-sep">–</span><input class="score-input" id="pa-${id}" type="number" min="0" max="20" placeholder="0"><button class="save-btn" onclick="savePred(${id})">Guardar</button>`;}
+function openPredInput(id){const row=document.querySelector(`#card-${id} .pred-pending-row`);if(!row)return;row.innerHTML=`<span class="result-label">Mi pronóstico</span><input class="score-input" id="ph-${id}" type="number" min="0" max="20" placeholder="0"><span class="score-sep">–</span><input class="score-input" id="pa-${id}" type="number" min="0" max="20" placeholder="0"><button class="save-btn" onclick="savePred(${id})">Guardar</button>`;}
 function savePred(id){const h=parseInt(document.getElementById(`ph-${id}`).value),a=parseInt(document.getElementById(`pa-${id}`).value);if(isNaN(h)||isNaN(a))return;if(!state.preds[id])state.preds[id]={};state.preds[id].pred=`${h}-${a}`;saveState();updateHeader();renderMatches();}
 
 // ─── GROUPS ──────────────────────────────────────────────────────────────────
 function computeStandings(grp){const teams=GROUPS[grp],s={};teams.forEach(t=>{s[t]={pts:0,gf:0,ga:0,pj:0}});MATCHES.filter(m=>m.group===grp).forEach(m=>{const r=state.results[m.id];if(!r)return;const p=parseScore(r);if(!p)return;s[m.home].pj++;s[m.away].pj++;s[m.home].gf+=p.h;s[m.home].ga+=p.a;s[m.away].gf+=p.a;s[m.away].ga+=p.h;if(p.h>p.a)s[m.home].pts+=3;else if(p.h<p.a)s[m.away].pts+=3;else{s[m.home].pts++;s[m.away].pts++;}});return teams.map(t=>({t,...s[t],dg:s[t].gf-s[t].ga})).sort((a,b)=>b.pts-a.pts||b.dg-a.dg||b.gf-a.gf);}
-function renderGroups(){document.getElementById('groups-container').innerHTML=Object.keys(GROUPS).map(g=>{const rows=computeStandings(g);return`<div class="group-card"><div class="group-card-header"><div class="group-name">Grupo ${g}</div></div><table class="group-table"><thead><tr><th>#</th><th>Selección</th><th>PJ</th><th>DG</th><th>Pts</th></tr></thead><tbody>${rows.map((r,i)=>`<tr class="${i<2?'qualify-row':''}"><td>${i<2?`<span class="qualify-dot"></span>`:i+1}</td><td class="team-col">${r.t}</td><td>${r.pj}</td><td>${r.dg>0?'+'+r.dg:r.dg}</td><td style="font-weight:700;color:${i<2?'var(--green)':'var(--text)'}">${r.pts}</td></tr>`).join('')}</tbody></table></div>`;}).join('');}
+function renderGroups(){document.getElementById('groups-container').innerHTML=Object.keys(GROUPS).map(g=>{const rows=computeStandings(g);return`<div class="group-card"><div class="group-card-header"><div class="group-name">Grupo ${g}</div></div><table class="group-table"><thead><tr><th>#</th><th>Selección</th><th>PJ</th><th>DG</th><th>Pts</th></tr></thead><tbody>${rows.map((r,i)=>`<tr class="${i<2?'qualify-row':''}"><td>${i<2?`<span class="qualify-dot"></span>`:i+1}</td><td class="team-col">${r.t}</td><td>${r.pj}</td><td>${r.dg>0?'+'+r.dg:r.dg}</td><td style="font-weight:700;color:${i<2?'var(--green2)':'var(--text)'}">${r.pts}</td></tr>`).join('')}</tbody></table></div>`;}).join('');}
 
 // ─── SCORE TAB ───────────────────────────────────────────────────────────────
 function renderScore(){
   const played=MATCHES.filter(m=>getMeta(m).real),cr=played.filter(m=>getMeta(m).pts>=3),ex=played.filter(m=>getMeta(m).pts===5);
-  document.getElementById('stats-grid').innerHTML=`
-    <div class="stat-card"><div class="stat-label">Puntos</div><div class="stat-value gold">${totalPts()}</div></div>
-    <div class="stat-card"><div class="stat-label">Jugados</div><div class="stat-value">${played.length}</div><div class="stat-sub">de 72</div></div>
-    <div class="stat-card"><div class="stat-label">Resultados ✓</div><div class="stat-value">${cr.length}</div><div class="stat-sub">× 3 pts</div></div>
-    <div class="stat-card"><div class="stat-label">Exactos ★</div><div class="stat-value gold">${ex.length}</div><div class="stat-sub">× 2 pts extra</div></div>`;
+  document.getElementById('stats-grid').innerHTML=`<div class="stat-card"><div class="stat-label">Puntos</div><div class="stat-value gold">${totalPts()}</div></div><div class="stat-card"><div class="stat-label">Jugados</div><div class="stat-value">${played.length}</div><div class="stat-sub">de 72</div></div><div class="stat-card"><div class="stat-label">Resultados ✓</div><div class="stat-value">${cr.length}</div><div class="stat-sub">× 3 pts</div></div><div class="stat-card"><div class="stat-label">Exactos ★</div><div class="stat-value gold">${ex.length}</div><div class="stat-sub">× 2 extra</div></div>`;
   const det=document.getElementById('score-detail');
-  if(!played.length){det.innerHTML=`<div class="loading-msg">Los resultados aparecerán aquí conforme avance el torneo.</div>`;return;}
-  det.innerHTML=played.map(m=>{
-    const{pred,real,pts}=getMeta(m),ico=pts===5?'★':pts===3?'✓':'✗',col=pts===5?'var(--gold)':pts===3?'var(--green)':'var(--red)';
-    return`<div class="history-row"><span class="history-ico" style="color:${col}">${ico}</span><span class="history-match">${m.home} vs ${m.away}</span><span class="history-pred">Pred: ${pred}</span><span class="history-real">Real: ${real}</span><span class="history-pts" style="color:${col}">+${pts}</span></div>`;
-  }).join('');
+  if(!played.length){det.innerHTML=`<div class="loading-msg">Los resultados aparecerán aquí conforme avance el torneo</div>`;return;}
+  det.innerHTML=played.map(m=>{const{pred,real,pts}=getMeta(m),ico=pts===5?'★':pts===3?'✓':'✗',col=pts===5?'var(--gold)':pts===3?'var(--green2)':'var(--red)';return`<div class="history-row"><span class="history-ico" style="color:${col}">${ico}</span><span class="history-match">${m.home} vs ${m.away}</span><span class="history-pred">Pred: ${pred}</span><span class="history-real">${real}</span><span class="history-pts" style="color:${col}">+${pts}</span></div>`;}).join('');
 }
 
 // ─── INIT ────────────────────────────────────────────────────────────────────

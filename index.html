@@ -324,7 +324,7 @@ body::after{content:'';position:fixed;top:50%;left:50%;transform:translate(-50%,
       <div id="reminder-banner" class="reminder-banner" style="display:none">
         <div class="reminder-icon" id="reminder-icon"></div>
         <div class="reminder-body"><div class="reminder-title" id="reminder-title"></div><div class="reminder-sub" id="reminder-sub"></div></div>
-        <a class="reminder-cta" href="https://claude.ai" target="_blank">Correr Analisis →</a>
+        <a class="reminder-cta" href="https://claude.ai" target="_blank">Correr Análisis →</a>
       </div>
       <div class="filter-bar" id="filter-bar"></div>
       <div id="matches-container"></div>
@@ -528,7 +528,7 @@ function saveState(){try{localStorage.setItem(LS_KEY,JSON.stringify(state));}cat
 function parseScore(s){if(!s)return null;const p=s.split('-');if(p.length!==2)return null;const a=parseInt(p[0]),b=parseInt(p[1]);if(isNaN(a)||isNaN(b))return null;return{h:a,a:b};}
 function scoreResult(s){const p=parseScore(s);if(!p)return null;return p.h>p.a?'W':p.h<p.a?'L':'D';}
 function calcPoints(pred,real){if(!pred||!real)return 0;if(pred===real)return 5;const pr=scoreResult(pred),rr=scoreResult(real);if(pr&&rr&&pr===rr)return 3;return 0;}
-function getMeta(m){const sp=state.preds[m.id]||{};return{pred:sp.pred!==undefined?sp.pred:m.pred,conf:sp.conf!==undefined?sp.conf:m.conf,winPct:sp.winPct!==undefined?sp.winPct:m.winPct,drawPct:sp.drawPct!==undefined?sp.drawPct:m.drawPct,lossPct:sp.lossPct!==undefined?sp.lossPct:m.lossPct,players:sp.players||m.players,keys:sp.keys||m.keys,warns:sp.warns||m.warns,tactic:sp.tactic!==undefined?sp.tactic:m.tactic,real:state.results[m.id]||null,live:state.live?state.live[m.id]:null};}
+function getMeta(m){return{pred:m.pred,conf:m.conf,winPct:m.winPct,drawPct:m.drawPct,lossPct:m.lossPct,players:m.players,keys:m.keys,warns:m.warns,tactic:m.tactic,real:state.results[m.id]||null,live:state.live?state.live[m.id]:null};}
 function totalPts(){return MATCHES.reduce((s,m)=>{const{pred,real}=getMeta(m);return s+calcPoints(pred,real);},0);}
 function analyzedCount(){return MATCHES.filter(m=>getMeta(m).pred).length;}
 function confClass(c){return c>=65?'high':c>=50?'med':'low';}

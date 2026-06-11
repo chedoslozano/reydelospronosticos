@@ -527,7 +527,7 @@ function saveState(){try{localStorage.setItem(LS_KEY,JSON.stringify(state));}cat
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 function parseScore(s){if(!s)return null;const p=s.split('-');if(p.length!==2)return null;const a=parseInt(p[0]),b=parseInt(p[1]);if(isNaN(a)||isNaN(b))return null;return{h:a,a:b};}
 function scoreResult(s){const p=parseScore(s);if(!p)return null;return p.h>p.a?'W':p.h<p.a?'L':'D';}
-function calcPoints(pred,real){if(!pred||!real)return 0;if(pred===real)return 5;const pr=scoreResult(pred),rr=scoreResult(real);if(pr&&rr&&pr===rr)return 3;return 0;}
+function calcPoints(pred,real){if(!pred||!real)return 0;if(pred===real)return 8;const pr=scoreResult(pred),rr=scoreResult(real);if(pr&&rr&&pr===rr)return 3;return 0;}
 function getMeta(m){return{pred:m.pred,conf:m.conf,winPct:m.winPct,drawPct:m.drawPct,lossPct:m.lossPct,players:m.players,keys:m.keys,warns:m.warns,tactic:m.tactic,real:state.results[m.id]||null,live:state.live?state.live[m.id]:null};}
 function totalPts(){return MATCHES.reduce((s,m)=>{const{pred,real}=getMeta(m);return s+calcPoints(pred,real);},0);}
 function analyzedCount(){return MATCHES.filter(m=>getMeta(m).pred).length;}
@@ -605,7 +605,7 @@ function renderCard(m){
   const hasPred=!!pred,hasReal=!!real,pts=calcPoints(pred,real),open=openDetails[m.id]||false,isLive=!!live;
   let cls='match-card';
   if(isLive)cls+=' live';
-  else if(hasPred&&hasReal){if(pts===5)cls+=' correct-exact';else if(pts===3)cls+=' correct-result';else cls+=' wrong';}
+  else if(hasPred&&hasReal){if(pts===8)cls+=' correct-exact';else if(pts===3)cls+=' correct-result';else cls+=' wrong';}
   else if(hasPred)cls+=' has-pred';
 
   const sd=getSD(m.home,m.away);
@@ -615,7 +615,7 @@ function renderCard(m){
   if(hasReal)realHtml=`<span class="real-score-badge">${real}</span>`;
   else if(isLive)realHtml=`<span class="live-score-badge">${live}</span>`;
   let ptsHtml='';
-  if(hasReal&&hasPred){if(pts===5)ptsHtml=`<span class="pts-earned p5">★ +5</span>`;else if(pts===3)ptsHtml=`<span class="pts-earned p3">✓ +3</span>`;else ptsHtml=`<span class="pts-earned p0">✗ 0</span>`;}
+  if(hasReal&&hasPred){if(pts===8)ptsHtml=`<span class="pts-earned p5">★ +8</span>`;else if(pts===3)ptsHtml=`<span class="pts-earned p3">✓ +3</span>`;else ptsHtml=`<span class="pts-earned p0">✗ 0</span>`;}
 
   const myCol=hasPred?`
     <div class="my-pred-score">${pred}</div>
@@ -689,11 +689,11 @@ function renderGroups(){document.getElementById('groups-container').innerHTML=Ob
 
 // ─── SCORE TAB ───────────────────────────────────────────────────────────────
 function renderScore(){
-  const played=MATCHES.filter(m=>getMeta(m).real),cr=played.filter(m=>getMeta(m).pts>=3),ex=played.filter(m=>getMeta(m).pts===5);
+  const played=MATCHES.filter(m=>getMeta(m).real),cr=played.filter(m=>calcPoints(getMeta(m).pred,getMeta(m).real)>=3),ex=played.filter(m=>calcPoints(getMeta(m).pred,getMeta(m).real)===8);
   document.getElementById('stats-grid').innerHTML=`<div class="stat-card"><div class="stat-label">Puntos</div><div class="stat-value gold">${totalPts()}</div></div><div class="stat-card"><div class="stat-label">Jugados</div><div class="stat-value">${played.length}</div><div class="stat-sub">de 72</div></div><div class="stat-card"><div class="stat-label">Resultados ✓</div><div class="stat-value">${cr.length}</div><div class="stat-sub">× 3 pts</div></div><div class="stat-card"><div class="stat-label">Exactos ★</div><div class="stat-value gold">${ex.length}</div><div class="stat-sub">× 2 extra</div></div>`;
   const det=document.getElementById('score-detail');
   if(!played.length){det.innerHTML=`<div class="loading-msg">Los resultados aparecerán aquí conforme avance el torneo</div>`;return;}
-  det.innerHTML=played.map(m=>{const{pred,real,pts}=getMeta(m),ico=pts===5?'★':pts===3?'✓':'✗',col=pts===5?'var(--gold)':pts===3?'var(--green2)':'var(--red)';return`<div class="history-row"><span class="history-ico" style="color:${col}">${ico}</span><span class="history-match">${m.home} vs ${m.away}</span><span class="history-pred">Pred: ${pred}</span><span class="history-real">${real}</span><span class="history-pts" style="color:${col}">+${pts}</span></div>`;}).join('');
+  det.innerHTML=played.map(m=>{const{pred,real}=getMeta(m),pts=calcPoints(pred,real),ico=pts===8?'★':pts===3?'✓':'✗',col=pts===8?'var(--gold)':pts===3?'var(--green2)':'var(--red)';return`<div class="history-row"><span class="history-ico" style="color:${col}">${ico}</span><span class="history-match">${m.home} vs ${m.away}</span><span class="history-pred">Pred: ${pred}</span><span class="history-real">${real}</span><span class="history-pts" style="color:${col}">+${pts}</span></div>`;}).join('');
 }
 
 // ─── INIT ────────────────────────────────────────────────────────────────────

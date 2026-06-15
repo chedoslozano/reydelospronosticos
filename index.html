@@ -539,30 +539,62 @@ let syncing=false;
 async function syncResults(){
   if(syncing)return;syncing=true;
   const btn=document.getElementById('sync-btn'),dot=document.getElementById('sync-dot'),txt=document.getElementById('sync-text');
-  btn.classList.add('syncing');btn.textContent='⟳ Sincronizando...';dot.className='sync-dot loading';txt.textContent='Consultando TheSportsDB...';
+  btn.classList.add('syncing');btn.textContent='⟳ Sincronizando...';dot.className='sync-dot loading';txt.textContent='Consultando resultados...';
   try{
-    const res=await fetch(`${API_BASE}/eventsseason.php?id=${LEAGUE_ID}&s=${SEASON}`);
+    const res=await fetch('https://worldcup26.ir/get/games');
     if(!res.ok)throw new Error('HTTP '+res.status);
-    const data=await res.json();const events=data.events||[];
+    const games=await res.json();
     let updated=0;const liveMap={};
-    events.forEach(ev=>{
-      const homeN=norm(ev.strHomeTeam),awayN=norm(ev.strAwayTeam);
-      const match=MATCHES.find(m=>m.home===homeN&&m.away===awayN);if(!match)return;
-      const hS=ev.intHomeScore,aS=ev.intAwayScore,status=ev.strStatus||'';
-      const isLive=['HT','1H','2H','ET','PT'].includes(status),isDone=['FT','AET','PEN'].includes(status);
-      if(isDone&&hS!==null&&hS!==''&&aS!==null&&aS!==''){const ns=`${hS}-${aS}`;if(state.results[match.id]!==ns){state.results[match.id]=ns;updated++;}}
+    const gameList=Array.isArray(games)?games:(games.data||games.games||games.matches||[]);
+    gameList.forEach(g=>{
+      // Try multiple field name formats
+      const homeN=norm(g.home_team||g.homeTeam||g.home||g.team_home||'');
+      const awayN=norm(g.away_team||g.awayTeam||g.away||g.team_away||'');
+      if(!homeN||!awayN)return;
+      const match=MATCHES.find(m=>m.home===homeN&&m.away===awayN);
+      if(!match)return;
+      const hS=g.home_score??g.homeScore??g.score_home??g.goals_home??null;
+      const aS=g.away_score??g.awayScore??g.score_away??g.goals_away??null;
+      const status=g.status||g.state||g.match_status||'';
+      const isDone=['FT','finished','FINISHED','completed','COMPLETED','full_time'].includes(status)||g.finished===true;
+      const isLive=['LIVE','live','1H','2H','HT','ET'].includes(status)||g.live===true;
+      if(isDone&&hS!==null&&aS!==null){
+        const ns=`${hS}-${aS}`;
+        if(state.results[match.id]!==ns){state.results[match.id]=ns;updated++;}
+      }
       if(isLive&&hS!==null&&aS!==null)liveMap[match.id]=`${hS}-${aS}`;
     });
     state.live=liveMap;state.lastSync=new Date().toISOString();saveState();
     const now=new Date().toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});
-    dot.className='sync-dot ok';txt.textContent=`Sincronizado ${now} · ${updated} resultado${updated!==1?'s':''} actualizado${updated!==1?'s':''}.`;
+    dot.className='sync-dot ok';
+    txt.textContent=`Sincronizado ${now} · ${updated} resultado${updated!==1?'s':''} actualizado${updated!==1?'s':''}.`;
     updateHeader();renderMatches();renderBanner();if(activeTab==='grupos')renderGroups();
-  }catch(err){dot.className='sync-dot err';txt.textContent='Sin conexión — ingresa resultados manualmente.';}
+  }catch(err){
+    // Fallback to TheSportsDB
+    try{
+      const res2=await fetch('https://www.thesportsdb.com/api/v1/json/3/eventsseason.php?id=4429&s=2026');
+      if(!res2.ok)throw new Error('fallback failed');
+      const data=await res2.json();const events=data.events||[];
+      let updated=0;const liveMap={};
+      events.forEach(ev=>{
+        const homeN=norm(ev.strHomeTeam),awayN=norm(ev.strAwayTeam);
+        const match=MATCHES.find(m=>m.home===homeN&&m.away===awayN);if(!match)return;
+        const hS=ev.intHomeScore,aS=ev.intAwayScore,status=ev.strStatus||'';
+        const isLive=['HT','1H','2H','ET','PT'].includes(status),isDone=['FT','AET','PEN'].includes(status);
+        if(isDone&&hS!==null&&hS!==''&&aS!==null&&aS!==''){const ns=`${hS}-${aS}`;if(state.results[match.id]!==ns){state.results[match.id]=ns;updated++;}}
+        if(isLive&&hS!==null&&aS!==null)liveMap[match.id]=`${hS}-${aS}`;
+      });
+      state.live=liveMap;state.lastSync=new Date().toISOString();saveState();
+      const now=new Date().toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});
+      dot.className='sync-dot ok';txt.textContent=`Sincronizado ${now} · ${updated} resultado${updated!==1?'s':''} actualizado${updated!==1?'s':''}.`;
+      updateHeader();renderMatches();renderBanner();if(activeTab==='grupos')renderGroups();
+    }catch(err2){dot.className='sync-dot err';txt.textContent='Sin conexión — ingresa resultados manualmente.';}
+  }
   btn.classList.remove('syncing');btn.textContent='⟳ Sincronizar';syncing=false;
 }
 
 // ─── BANNER ──────────────────────────────────────────────────────────────────
-const SESSIONS=[{date:'2026-06-10',label:'Miércoles 10 jun',days:'11, 12 y 13 de junio',count:8},{date:'2026-06-15',label:'Domingo 15 jun',days:'14 al 17 de junio',count:16},{date:'2026-06-19',label:'Jueves 19 jun',days:'18 al 21 de junio',count:16},{date:'2026-06-23',label:'Lunes 23 jun',days:'22 al 27 de junio',count:32}];
+const SESSIONS=[{date:'2026-06-19',label:'Jueves 19 jun',days:'18 al 21 de junio',count:16},{date:'2026-06-23',label:'Lunes 23 jun',days:'22 al 27 de junio',count:32}];
 function renderBanner(){
   const banner=document.getElementById('reminder-banner'),icon=document.getElementById('reminder-icon'),title=document.getElementById('reminder-title'),sub=document.getElementById('reminder-sub');
   const now=new Date(),today=now.toISOString().slice(0,10);

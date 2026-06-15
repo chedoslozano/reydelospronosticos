@@ -540,29 +540,41 @@ async function syncResults(){
   if(syncing)return;syncing=true;
   const btn=document.getElementById('sync-btn'),dot=document.getElementById('sync-dot'),txt=document.getElementById('sync-text');
   btn.classList.add('syncing');btn.textContent='⟳ Sincronizando...';dot.className='sync-dot loading';txt.textContent='Consultando resultados...';
+
+  // Team name map for openfootball API
+  const OFB_MAP={'Mexico':'México','South Africa':'Sudáfrica','South Korea':'Corea del Sur',
+    'Czech Republic':'Rep. Checa','Canada':'Canadá','Bosnia and Herzegovina':'Bosnia y Herz.',
+    'USA':'EUA','United States':'EUA','Switzerland':'Suiza','Brazil':'Brasil',
+    'Morocco':'Marruecos','Haiti':'Haití','Scotland':'Escocia','Australia':'Australia',
+    'Turkey':'Turquía','Germany':'Alemania','Curaçao':'Curazao','Curacao':'Curazao',
+    'Netherlands':'Países Bajos','Japan':'Japón','Sweden':'Suecia','Tunisia':'Túnez',
+    "Côte d'Ivoire":"Costa de Marfil",'Ivory Coast':'Costa de Marfil','Ecuador':'Ecuador',
+    'Spain':'España','Cape Verde':'Cabo Verde','Saudi Arabia':'Arabia Saudita',
+    'Uruguay':'Uruguay','Belgium':'Bélgica','Egypt':'Egipto','Iran':'Irán',
+    'New Zealand':'Nueva Zelanda','France':'Francia','Senegal':'Senegal','Iraq':'Irak',
+    'Norway':'Noruega','Argentina':'Argentina','Algeria':'Argelia','Austria':'Austria',
+    'Jordan':'Jordania','Portugal':'Portugal','DR Congo':'Congo DR','Congo DR':'Congo DR',
+    'Uzbekistan':'Uzbekistán','Colombia':'Colombia','England':'Inglaterra',
+    'Croatia':'Croacia','Ghana':'Ghana','Panama':'Panamá','Qatar':'Qatar','Paraguay':'Paraguay'};
+  function normOFB(n){return OFB_MAP[n]||n;}
+
   try{
-    const res=await fetch('https://worldcup26.ir/get/games');
+    const res=await fetch('https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json');
     if(!res.ok)throw new Error('HTTP '+res.status);
-    const games=await res.json();
+    const data=await res.json();
+    const matches=data.matches||data.games||[];
     let updated=0;const liveMap={};
-    const gameList=Array.isArray(games)?games:(games.data||games.games||games.matches||[]);
-    gameList.forEach(g=>{
-      // Try multiple field name formats
-      const homeN=norm(g.home_team||g.homeTeam||g.home||g.team_home||'');
-      const awayN=norm(g.away_team||g.awayTeam||g.away||g.team_away||'');
+    matches.forEach(g=>{
+      const homeN=normOFB(g.team1||g.home_team||'');
+      const awayN=normOFB(g.team2||g.away_team||'');
       if(!homeN||!awayN)return;
       const match=MATCHES.find(m=>m.home===homeN&&m.away===awayN);
       if(!match)return;
-      const hS=g.home_score??g.homeScore??g.score_home??g.goals_home??null;
-      const aS=g.away_score??g.awayScore??g.score_away??g.goals_away??null;
-      const status=g.status||g.state||g.match_status||'';
-      const isDone=['FT','finished','FINISHED','completed','COMPLETED','full_time'].includes(status)||g.finished===true;
-      const isLive=['LIVE','live','1H','2H','HT','ET'].includes(status)||g.live===true;
-      if(isDone&&hS!==null&&aS!==null){
-        const ns=`${hS}-${aS}`;
+      const score=g.score;
+      if(score&&score.ft&&Array.isArray(score.ft)&&score.ft.length===2){
+        const ns=`${score.ft[0]}-${score.ft[1]}`;
         if(state.results[match.id]!==ns){state.results[match.id]=ns;updated++;}
       }
-      if(isLive&&hS!==null&&aS!==null)liveMap[match.id]=`${hS}-${aS}`;
     });
     state.live=liveMap;state.lastSync=new Date().toISOString();saveState();
     const now=new Date().toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});
@@ -570,25 +582,9 @@ async function syncResults(){
     txt.textContent=`Sincronizado ${now} · ${updated} resultado${updated!==1?'s':''} actualizado${updated!==1?'s':''}.`;
     updateHeader();renderMatches();renderBanner();if(activeTab==='grupos')renderGroups();
   }catch(err){
-    // Fallback to TheSportsDB
-    try{
-      const res2=await fetch('https://www.thesportsdb.com/api/v1/json/3/eventsseason.php?id=4429&s=2026');
-      if(!res2.ok)throw new Error('fallback failed');
-      const data=await res2.json();const events=data.events||[];
-      let updated=0;const liveMap={};
-      events.forEach(ev=>{
-        const homeN=norm(ev.strHomeTeam),awayN=norm(ev.strAwayTeam);
-        const match=MATCHES.find(m=>m.home===homeN&&m.away===awayN);if(!match)return;
-        const hS=ev.intHomeScore,aS=ev.intAwayScore,status=ev.strStatus||'';
-        const isLive=['HT','1H','2H','ET','PT'].includes(status),isDone=['FT','AET','PEN'].includes(status);
-        if(isDone&&hS!==null&&hS!==''&&aS!==null&&aS!==''){const ns=`${hS}-${aS}`;if(state.results[match.id]!==ns){state.results[match.id]=ns;updated++;}}
-        if(isLive&&hS!==null&&aS!==null)liveMap[match.id]=`${hS}-${aS}`;
-      });
-      state.live=liveMap;state.lastSync=new Date().toISOString();saveState();
-      const now=new Date().toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});
-      dot.className='sync-dot ok';txt.textContent=`Sincronizado ${now} · ${updated} resultado${updated!==1?'s':''} actualizado${updated!==1?'s':''}.`;
-      updateHeader();renderMatches();renderBanner();if(activeTab==='grupos')renderGroups();
-    }catch(err2){dot.className='sync-dot err';txt.textContent='Sin conexión — ingresa resultados manualmente.';}
+    dot.className='sync-dot err';
+    txt.textContent='Sin conexión — ingresa resultados manualmente.';
+    console.error('Sync error:',err);
   }
   btn.classList.remove('syncing');btn.textContent='⟳ Sincronizar';syncing=false;
 }
